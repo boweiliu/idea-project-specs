@@ -58,13 +58,26 @@ Enable Claude Code usage on mobile while desktop is occupied (gaming, intensive 
 ## WIP: Refinements Under Development
 
 ### Deployment Architecture
-App works deployment-agnostically as web interface to Claude Code. Two deployment modes:
-- **Local**: Serves web interface on LAN/WiFi for desktop multitasking
-- **Cloud**: Deployed on server with git project + Claude Code, accessed over internet
+Semi-separated deployment system handles both app deployment and network configuration (LAN/WAN). Hot-reload on FE+BE can cause broken states, requiring out-of-band deployment management.
 
-Architecture remains identical - only access method (LAN vs WAN endpoint) differs.
+**Deployment Manager**: Separate system with simple web interface (no LLM APIs):
+- Deploy/rollback app versions via touch UI
+- Network configuration management (LAN/WAN endpoints)  
+- Version tracking and app health monitoring
+- Emergency rollback when hot-reload breaks main app
+
+**App Modes**: Local (LAN/WiFi) vs Cloud (internet access) - architecture identical, deployment manager handles network differences.
 
 ### Mobile Notifications  
 PWA push notifications for multitasking scenarios:
 - Task completion (builds, tests, long-running commands)
 - Other use cases TBD but probably not in scope
+
+### Session Persistence
+Each Claude Code session (mobile or desktop) persists chat/prompt history to project storage. Fresh sessions can load full conversation context from any previous session in that project. No live process handoff needed - just persistent conversation history accessible across device switches.
+
+### Voice Processing 
+Voice input targets chat messages primarily. Terminal commands possible but not core supported flow. Speech-to-text API choice prioritizes easy integration + low latency + sufficient accuracy. Options: OpenAI Whisper, Whisper Flow, others TBD based on integration ease.
+
+### File Operations
+Mobile interface provides read-only code display with line numbers. User reviews code and provides commentary via chat, but no direct code editing. Keeps mobile interaction focused on communication rather than complex editing workflows.
