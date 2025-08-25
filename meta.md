@@ -1,53 +1,32 @@
 # Spec Writing Guidelines
 
-## Core Principles
+## Priority #1: Succinctness & Zero Repetition
 
-**Succinctness**: Every sentence must add value. Cut fluff, redundancy, and obvious statements.
+Every sentence adds unique value. Cut fluff. Say it once, perfectly.
 
-**Distinct Sections**: Each section serves a specific purpose. No overlap. Clear boundaries.
-
-**Scannable Structure**: Busy readers should grasp the project in 2 minutes.
+Busy readers must grasp the project in 2 minutes.
 
 ## Standard Structure
 
 ### 1. Goal & Problem
-- What problem are we solving? 
-- Why does this matter?
-- One clear primary use case
+What problem and why it matters. One primary use case.
 
 ### 2. Stack Choices  
-- Technology decisions with brief rationale
-- Key architectural choices
-- Why not alternatives?
+Technology decisions with rationale. Why not alternatives?
 
 ### 3. Core User Flows
-- Primary user journey (80% use case)
-- Key interaction patterns  
-- Major features/modes
+Primary journey (80% use case). Key interaction patterns.
 
 ### 4. Technical Architecture
-- System design and modularity
-- How components interact
-- Key technical constraints
+System design, modularity, component interactions.
 
 ### 5. Miscellaneous (Optional)
-- Performance targets
-- Browser/platform support  
-- Future considerations
-- Undecided implementation details
+Performance targets, platform support, future considerations, undecided details.
 
-## Writing Style
+## Writing Rules
 
-**Be Definitive**: "We will use Phoenix" not "We might consider Phoenix"
-**Front-load Important Info**: Most critical details first
-**Use Bullets**: Easier to scan than paragraphs
-**Minimize Repetition**: Say it once, say it well
-**Rationale When Needed**: Explain non-obvious choices
-
-## Common Mistakes to Avoid
-
-- Restating the same point in different sections
-- Over-explaining obvious technology choices
-- Mixing implementation details with high-level goals
-- Writing for completeness instead of clarity
-- Creating sections that don't serve distinct purposes
+- **Definitive**: "We will use Phoenix" not "We might consider Phoenix"
+- **Front-load**: Most critical details first
+- **Bullets**: Easier to scan than paragraphs  
+- **Rationale**: Only for non-obvious choices
+- **Distinct Sections**: No overlap between sections
