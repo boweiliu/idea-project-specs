@@ -1,115 +1,56 @@
 # Mobile-Friendly Claude Code Web Interface
 
-## Problem
+## Goal & Problem
 
-I want to use claude code to build shit while my computer is running other stuff e.g. factorio. To do this, we will design a mobile-friendly web interface into claude code.
+Enable Claude Code usage on mobile while desktop is occupied (gaming, intensive tasks). Current desktop-only interface prevents coding continuity during resource conflicts.
 
-## Project Overview
+**Core Need**: Portrait-mode web interface for coding on phone with full Claude Code functionality.
 
-A mobile-optimized web application that provides access to Claude Code functionality through a portrait-mode friendly interface. The system enables developers to continue coding projects on mobile devices while their desktop computers are occupied with other tasks.
+## Stack Choices
+
+**Frontend**: Vite + React with hot reload
+**Backend**: Elixir Phoenix with LiveReload  
+**Communication**: Phoenix Channels (WebSocket)
+**Voice**: LLM-based speech-to-text API
+**Storage**: Database + Git integration
+
+*Rationale*: Hot reload on both ends for rapid development. Phoenix Channels for real-time sync. External voice API for quality over phone built-ins.
+
+## Core User Flows
+
+### Primary Flow: Desktop → Mobile Transition
+1. Start coding session on desktop Claude Code
+2. Switch to mobile web interface
+3. Continue same project/conversation seamlessly
+4. Voice input for reduced typing
+5. All interactions persisted and committed to Git
+
+### Display Modes
+- **Terminal Mode**: Embedded ttyd for full shell access
+- **Chat Mode**: Mobile-optimized conversation interface
+
+### Input Methods
+- Touch typing (traditional)
+- Voice-to-text (primary for mobile)
+- Push-to-talk with visual feedback
 
 ## Technical Architecture
 
-### Frontend Stack
-- **Framework**: Vite + React
-- **Target**: Portrait-mode mobile devices (phones primarily)
-- **Hot Reload**: Vite HMR for rapid development
+### Modularity
+- **Display Components**: Pluggable terminal vs chat views
+- **Voice Pipeline**: Audio capture → LLM transcription → text processing  
+- **Persistence Layer**: Message storage + Git commit automation
+- **Sync Engine**: Real-time state between desktop/mobile sessions
 
-### Backend Stack
-- **Framework**: Elixir Phoenix
-- **Hot Reload**: Phoenix LiveReload for backend changes
-- **WebSocket**: Phoenix Channels for real-time communication
-- **Voice API**: LLM-based voice recognition service integration
-- **Persistence**: Message history storage and Git commit automation
-
-### Display Modularity
-The interface supports two distinct display modes:
-
-1. **Terminal Mode**: Embedded ttyd terminal interface
-2. **Chat Mode**: Parsed and reconstituted chat interface optimized for mobile interaction
-
-## Core Features
-
-### Mobile-Optimized Chat Interface
-- Portrait-mode layout optimized for thumb navigation
-- Touch-friendly message composition
-- **Voice Input**: LLM-powered speech-to-text for hands-free interaction
-- Text input fallback for traditional typing
-- Syntax highlighting adapted for small screens
-- Collapsible code blocks for better readability
-
-### Embedded Terminal Access
-- ttyd integration for full terminal access
-- Mobile keyboard optimization
-- Gesture controls for common terminal operations
-- Responsive terminal sizing
-
-### Real-Time Synchronization
-- WebSocket-based communication between mobile and desktop sessions
-- Live project state synchronization
-- Hot reload capabilities on both frontend and backend
-
-### Message Persistence & Version Control
-- **Chat History Storage**: All user messages and LLM responses persisted to database
-- **Git Integration**: Automatic commit of conversation history and code changes
-- **Session Recovery**: Restore chat context across device switches
-- **Audit Trail**: Complete development conversation history for project continuity
-
-## User Experience Goals
-
-### Primary Use Case
-Developer working on projects via Claude Code while desktop is busy with other applications (gaming, intensive tasks, etc.)
-
-### Interaction Patterns
-- Thumb-first navigation design
-- **Voice-first input** for reduced typing on mobile
-- Quick access to common development operations
-- Seamless switching between terminal and chat modes
-- Push-to-talk interface for voice input
-- Visual feedback for voice recognition status
-
-## Technical Requirements
-
-### Performance
-- Fast initial load times on mobile networks
-- Efficient WebSocket communication
-- Minimal battery impact
-- **Voice Processing**: Low-latency speech-to-text via LLM API
-- **Persistence**: Efficient database writes for message storage
-
-### Responsiveness
-- Sub-100ms interface interactions
-- Real-time terminal responsiveness
-- Smooth transitions between modes
-
-### Compatibility
-- Modern mobile browsers (Chrome, Safari, Firefox)
-- iOS Safari and Android Chrome primary targets
+### Key Systems
+- WebSocket-based session synchronization
+- Mobile-first responsive design (portrait optimization)
 - Progressive Web App capabilities
-- **Audio API Support**: Web Audio API for voice input capture
-- **Microphone Permissions**: Seamless permission handling across browsers
+- Session recovery across device switches
 
-## Development Approach
+## Miscellaneous Details
 
-### Hot Reload Setup
-- Frontend: Vite HMR with React Fast Refresh
-- Backend: Phoenix LiveReload with automatic recompilation
-- Full-stack development workflow optimization
-
-### Modular Architecture
-- Pluggable display components (terminal vs chat)
-- Configurable interface layouts
-- **Voice Input Pipeline**: Modular audio capture → LLM transcription → text processing
-- **Persistence Layer**: Database abstraction for message storage and Git operations
-- Extensible for future mobile-specific features
-
-## Success Criteria
-
-1. Functional parity with essential Claude Code features on mobile
-2. Smooth, responsive mobile user experience
-3. Reliable real-time synchronization between desktop and mobile
-4. **Voice Input**: Accurate speech-to-text transcription with <2s latency
-5. **Message Persistence**: Complete chat history preserved and committed to Git
-6. Developer productivity maintained when switching to mobile interface
-7. Hot reload functioning on both frontend and backend during development
-8. Seamless fallback from voice to text input when needed
+**Performance Targets**: <2s voice transcription, <100ms UI interactions
+**Browser Support**: Chrome, Safari, Firefox (mobile focus)
+**Fallbacks**: Voice → text input, mobile → desktop graceful degradation
+**Future Considerations**: Offline mode, gesture controls, tablet optimization
