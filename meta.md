@@ -38,6 +38,13 @@ Use question-and-answer flow to drive exploration and refinement. Questions unlo
 
 If an LLM is involved, e.g. claude code, the LLM should take on the questioner role.
 
+### Implementation Ordering
+Feature sequencing decisions require Q&A exploration. LLM questions should uncover:
+- User priorities and constraints  
+- Technical dependencies and risks
+- MVP definition and success criteria
+- Resource limitations and timeline pressures
+
 ### Spec Creation
 1. **Filter decisions**: Keep what's needed for the spec
 2. **Archive leads**: Store promising threads for future exploration
