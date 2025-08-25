@@ -30,3 +30,17 @@ Performance targets, platform support, future considerations, undecided details.
 - **Bullets**: Easier to scan than paragraphs  
 - **Rationale**: Only for non-obvious choices
 - **Distinct Sections**: No overlap between sections
+
+## Development Flow
+
+### Conversational Refinement
+Use question-and-answer flow to drive exploration and refinement. Questions unlock assumptions, reveal constraints, and force concrete decisions.
+
+If an LLM is involved, e.g. claude code, the LLM should take on the questioner role.
+
+### Spec Creation
+1. **Filter decisions**: Keep what's needed for the spec
+2. **Archive leads**: Store promising threads for future exploration
+3. **Review against template**: Follow structure above
+
+The conversation generates the thinking. The spec captures only the decisions.

@@ -23,3 +23,5 @@ This repository contains technical specs for future project ideas. Each project 
 
 Spec creation follows: problem identification → stack research → user flow mapping → technical design → review against `meta.md` guidelines.
 
+**Important**: After updating any documentation, always review the changes against `meta.md` principles. Look for repetition, unclear sections, or violations of the succinctness priority. Fix immediately.
+
