@@ -53,4 +53,18 @@ Enable Claude Code usage on mobile while desktop is occupied (gaming, intensive 
 **Performance Targets**: <2s voice transcription, <100ms UI interactions
 **Browser Support**: Chrome, Safari, Firefox (mobile focus)
 **Fallbacks**: Voice → text input, mobile → desktop graceful degradation
-**Future Considerations**: Offline mode, gesture controls, tablet optimization
+**Not in scope**: Offline mode, gesture controls, tablet optimization
+
+## WIP: Refinements Under Development
+
+### Deployment Architecture
+App works deployment-agnostically as web interface to Claude Code. Two deployment modes:
+- **Local**: Serves web interface on LAN/WiFi for desktop multitasking
+- **Cloud**: Deployed on server with git project + Claude Code, accessed over internet
+
+Architecture remains identical - only access method (LAN vs WAN endpoint) differs.
+
+### Mobile Notifications  
+PWA push notifications for multitasking scenarios:
+- Task completion (builds, tests, long-running commands)
+- Other use cases TBD but probably not in scope
