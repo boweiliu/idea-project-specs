@@ -1,13 +1,13 @@
 # Aperiodic Tiling Explorer
 
 ## Goal & Problem
-Personal tool for discovering rep-tiles and generating aperiodic tilings to notice visual patterns. Focus on polyX-minoes across various base tilings with sophisticated context-aware coloring.
+Personal tool for discovering rep-tiles and generating aperiodic tilings to notice visual patterns. PolyX-minoes on 24 base tilings, colored by neighbor/shape/rotation rules.
 
 ## Stack Choices
-- **Rendering**: WebGPU (WebGL2 fallback) for maximum performance with massive tilings
-- **Language**: TypeScript for rule definitions and core logic
-- **Base tilings**: All 24 regular (3), Archimedean (8), and Catalan (13) tilings
-- **UI Framework**: TBD - needs efficient GPU integration
+- **Rendering**: WebGPU (WebGL2 fallback) - only tech handling 100K+ tiles interactively
+- **Language**: TypeScript - type safety for complex tile/rule interfaces
+- **Base tilings**: All 24 regular (3), Archimedean (8), Catalan (13)
+- **UI Framework**: TBD - needs GPU pipeline integration
 
 ## Core User Flows
 1. Select base tiling (square, triangular, Cairo pentagonal, etc.)
@@ -15,7 +15,7 @@ Personal tool for discovering rep-tiles and generating aperiodic tilings to noti
 3. Apply substitution rules to generate large aperiodic patterns
 4. Write TypeScript coloring rules based on shape, rotation, neighbors
 5. Interactive pan/zoom exploration to discover patterns
-6. Adjust colors via UI picker, re-run rules instantly
+6. Adjust colors via UI picker, see instant updates
 
 ## Technical Architecture
 - **Tiling engine**: Generates polyX-minoes on selected base grid
