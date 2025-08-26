@@ -38,6 +38,18 @@ Use question-and-answer flow to drive exploration and refinement. Questions unlo
 
 If an LLM is involved, e.g. claude code, the LLM should take on the questioner role.
 
+#### LLM Question Management
+When exploring specs, LLMs should write questions to a `QUESTIONS.md` file in the project directory. This enables:
+- Asynchronous human responses
+- Answering questions one at a time
+- Parallel exploration of multiple topics
+- Clear question tracking and history
+
+Format questions with:
+- Numbered list for easy reference
+- Context for each question
+- Clear separation between answered/pending
+
 ### Implementation Ordering
 Feature sequencing decisions require Q&A exploration. LLM questions should uncover:
 - User priorities and constraints  
