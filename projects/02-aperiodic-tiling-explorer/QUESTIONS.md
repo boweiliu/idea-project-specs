@@ -9,14 +9,18 @@ Building a tool for discovering rep-tiles and creating aperiodic tilings with co
 How do you want to define/discover rep-tiles?
 - [ ] Start with known rep-tiles (sphinx, L-triomino, chair) and explore variations
 - [ ] Parametric exploration (e.g., varying angles/ratios in polyominoes)
-- [ ] Grid-based discovery (finding shapes that tile into larger copies)
+- [x] **Grid-based discovery** - polyX-minoes on all regular, Archimedean, and Catalan tilings
 - [ ] Freeform drawing with automatic rep-tile detection
 
+**DECIDED**: Support all regular (3), Archimedean (8), and Catalan (13) base tilings from the start
+
 ### Replication Rules
-- [ ] Find how a shape tiles into n copies of itself
-- [ ] Explore different n-values (rep-4, rep-9, etc.)
-- [ ] Support fractional/irrational scaling factors
-- [ ] Handle combinations where multiple shapes create larger versions
+- [?] Find how a shape tiles into n copies of itself (maybe)
+- [?] Explore different n-values (rep-4, rep-9, etc.) (maybe)
+- [?] Support fractional/irrational scaling factors (maybe)
+- [x] **Handle combinations where multiple shapes create larger versions** (definite)
+
+**DECIDED**: Must support multi-shape combinations. Other features TBD based on implementation complexity.
 
 ### Aperiodicity Generation
 How to create aperiodic patterns from rep-tiles?
@@ -39,6 +43,9 @@ How should the rules compose?
 - [ ] Simple scripting language/DSL
 - [ ] Preset rules you can tweak with sliders
 - [ ] Node-based visual programming
+- [x] **TypeScript interface implementation** - write coloring rules as TS modules, select via UI buttons
+
+**DECIDED**: Modular TypeScript code interface where you implement rule classes/functions, UI has buttons to switch between implementations + color picker(s) to pass colors to the rule functions
 
 ### Real-time Updates
 When you change a coloring rule:
@@ -55,9 +62,11 @@ When you change a coloring rule:
 ## Technical Choices
 
 ### Platform
-- [ ]:1
+- [x] **Web-based** - for flexibility and easy sharing
 - [ ] Native app (better performance for large tilings)
-- [ ] GPU acceleration important for complex neighbor queries
+- [x] **GPU acceleration critical** - WebGPU if available, WebGL2 fallback
+
+**DECIDED**: WebGPU for maximum performance (with WebGL2 fallback). Complexity acceptable for performance gains.
 
 ### Coloring Features Priority
 Rank these 1-6 (1=most important):
@@ -85,8 +94,10 @@ Begin with:
 
 ### Visual Output
 - [ ] High-resolution static images you can save/print
-- [ ] Interactive exploration where you can zoom/pan around massive tilings
+- [x] **Interactive exploration where you can zoom/pan around massive tilings** (primary)
 - [ ] Both equally
+
+**DECIDED**: Focus on interactive pan/zoom for pattern discovery. Export is secondary.
 
 ### Usage Pattern
 - [ ] Quickly generate many variations to browse
