@@ -45,7 +45,7 @@ Build a performant real-time multiplayer game platform with flexible client tran
 
 **Fallback Coordination**: If futex unavailable (older kernels), use eventfd. Final fallback: Linux signals (SIGUSR1/SIGUSR2).
 
-**Deep Dive Artifacts**: `02-ipc-layer/` folder tracks build components, instrumentation flows, library research, and LLM prompt seeds for this subproject.
+**Deep Dive Artifacts**: `02-ipc-layer/00-README.md` indexes the protocol deep dive; start with `01-PROTOCOL.md` before referencing component, flow, and layout docs.
 
 ### Subproject 3: 3D Hex Grid Factory Game
 

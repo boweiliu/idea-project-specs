@@ -3,9 +3,9 @@
 ## Elixir / OTP Glue
 - **`rustler`**: Easiest bridge for dirty NIFs and shared binary resources; supports resource handles that wrap file descriptors. Use `schedule = :dirty_io` for blocking shmem ops. Risk: adds build dependency on Rust toolchain.
 - **`:telemetry` + `opentelemetry`**: Core instrumentation stack; pair with `opentelemetry_exporter` (OTLP) to stream metrics/traces; reuse across broader platform.
-- **`:persistent_term`**: Store immutable layout metadata generated from `layout.toml` to avoid repeated parsing on hot path.
+- **`:persistent_term`**: Store immutable layout metadata generated from `07-layout.toml` to avoid repeated parsing on hot path.
 - **`:telemetry_poller`**: Gather periodic worker health metrics from shared memory without bespoke GenServers.
-- **`:mix release` hooks**: Add pre-start script to validate `layout.toml` compatibility before boot; prevents production drift.
+- **`:mix release` hooks**: Add pre-start script to validate `07-layout.toml` compatibility before boot; prevents production drift.
 
 ## Rust Worker Stack
 - **`nix` crate**: Thin POSIX wrappers for `shm_open`, `mmap`, `futex`, `eventfd`; battle-tested and actively maintained.

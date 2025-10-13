@@ -7,7 +7,7 @@
    - `lookup(role)`
    - `mark_degraded(id, reason)`
    - `heartbeat(id, metrics)`
-   Persist registry state in ETS for fast lookups, emit `:telemetry` events on state changes, and enforce that `layout_version` matches the latest `layout.toml` digest. Include module docs summarizing behaviour and public API.
+   Persist registry state in ETS for fast lookups, emit `:telemetry` events on state changes, and enforce that `layout_version` matches the latest `07-layout.toml` digest. Include module docs summarizing behaviour and public API.
    ```
 
 2. **Rust Worker Loop Skeleton**
