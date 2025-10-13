@@ -7,6 +7,7 @@
   - `FLOWS.md` — instrumentation + test scenarios.
   - `LIBRARIES.md` — runtime/framework evaluation.
   - `LLM_PROMPTS.md` — ready-to-use prompt seeds.
+  - `TELEMETRY_SAMPLES.md` — debug logging helper snippets.
 - **Status (2025-10-13)**: Drafted initial deep dive. Review for alignment with `OVERVIEW.md` when new decisions land.
 
 Next writer: review unanswered questions in `../QUESTIONS.md` (items 6-9) and extend docs with confirmed decisions rather than speculative options.
