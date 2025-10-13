@@ -1,0 +1,40 @@
+# Shared Memory Layout (Draft)
+
+# Header shared by request/response rings; 64-byte aligned.
+[header]
+schema_version = 1
+endianness = "little"
+alignment_bytes = 64
+
+[request_ring]
+slot_count = 1024          # power of two for wrap-around math
+slot_capacity_bytes = 65536
+header_size_bytes = 64     # per-slot metadata (op, len, corr_id, checksum)
+data_offset_bytes = 64
+
+[response_ring]
+slot_count = 1024
+slot_capacity_bytes = 65536
+header_size_bytes = 64
+data_offset_bytes = 64
+
+[telemetry_block]
+fields = [
+  "last_heartbeat_unix_ms",
+  "avg_job_duration_us",
+  "jobs_completed_total",
+  "queue_depth_current",
+  "queue_depth_high_watermark",
+  "fallback_path"           # enum: futex | eventfd | signal
+]
+
+[signals]
+futex_word_offset = 0       # relative to shared control page
+eventfd_counter_offset = 8
+shutdown_flag_offset = 16
+
+[safety]
+guard_page_bytes = 4096
+crc32_polynomial = "0xEDB88320"
+
+# NOTE: Update WorkerRegistry digest when any value here changes.

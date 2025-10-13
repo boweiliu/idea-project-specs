@@ -118,3 +118,10 @@
 50. **Data flow**: Does simulation read from cache (6), or cache mirrors simulation state? Who owns authoritative state?
 
 51. **Component boundaries**: Should messaging abstraction (7) be used for all inter-component communication, or just specific hot paths?
+
+## Subproject 2: Follow-Ups (2025-10-13)
+
+52. **Telemetry sink**: Should IPC metrics/spans emit via OTLP (e.g., Honeycomb/Grafana Tempo) or do we need Prometheus exposition for existing infra?
+    **Answer (2025-10-13)**: Focus on lightweight debug logging during tests using `06-TELEMETRY-SAMPLES.md`; keep hooks compatible with `:telemetry` for future exporters.
+
+53. **Default ring sizing**: Are 1024×64KB slots acceptable for MVP, or do we need configurable sizing based on worker role (simulation vs pathfinding vs worldgen)?

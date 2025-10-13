@@ -1,0 +1,9 @@
+# Instrumented Flows
+
+- **Job Dispatch Success Path**: Phoenix receives request → `JobDispatcher` writes payload → futex wake → worker processes → `ResultIngestor` replies. Instrument enqueue latency, wake-to-start delta, compute duration, response marshalling. Exercise via integration harness with varied payload sizes (1KB, 32KB, 256KB).
+- **Backpressure & Throttling**: Simulate dispatcher queue saturation; verify high-watermark triggers client slowdowns or rejects with `429` equivalent, and telemetry emits `ipc.queue.backpressure`. Test with bursty load generator pushing 10× expected throughput.
+- **Oversized Payload Handling**: Submit payload exceeding buffer capacity; confirm `SchemaGuard` rejects gracefully, records metric, and surfaces actionable error. Add regression test covering future layout growth.
+- **Fallback Signaling**: Force futex failure (mock `ENOSYS`) to confirm automatic switch to `eventfd`, and secondary fallback to signals. Capture instrumentation `ipc.signal_path` and ensure no lost jobs. Test on CI using LD_PRELOAD shim to stub futex.
+- **Worker Crash Recovery**: Trigger worker panic mid-job; ensure `PortSupervisor` restarts executable, queued jobs receive failure response, registry marks worker degraded until warmup completes. Telemetry should note downtime duration. Chaos tests introduce repeated crashes to validate exponential backoff.
+- **Version Negotiation**: Spin worker built against incompatible `07-layout.toml`; verify handshake fails, registry quarantines worker, and diagnostics CLI reports mismatch. Unit test ensures helpful error copy and directs next steps.
+- **Worker-to-Worker Link Setup**: Simulate manager-issued `link` command from `LinkManager`; confirm both workers receive shared offsets, establish side channel, notify manager of readiness, and teardown cleanly on manager shutdown.
