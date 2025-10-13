@@ -13,7 +13,7 @@
 ## Subproject 2: High-Performance Worker IPC
 
 5. **Worker process model**: Single worker per Phoenix node, or a pool? How to handle worker crashes during expensive operations?
-    **Answer (2025-10-13)**: Treat workers as dedicated heterogenous services. Each worker owns a specific job/code segment with its own shmem arena, can be hot-reloaded or spun up/down independently, and idles in deep sleep when idle. No interchangeable pool; rely on a registry/dispatcher to route work to the correct specialist worker.
+    **Answer (2025-10-13)**: Treat workers as dedicated heterogenous services. Each worker owns a specific job/code segment with its own shmem arena, can be hot-reloaded or spun up/down independently, and idles in deep sleep when idle. No interchangeable pool; rely on a registry/dispatcher to route work to the correct specialist worker. Registry entries hold shmem handles and recovery metadata, dispatcher routes role-targeted jobs with backpressure handling, and supervisors capture error context for manual recovery callbacks.
 
 6. **Shared memory sizing**: Fixed size buffers or dynamic allocation? How to handle requests that don't fit in shmem region?
 
