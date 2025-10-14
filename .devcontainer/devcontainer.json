@@ -1,0 +1,14 @@
+{
+  "name": "Text Editors Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts": [22],
+  "portsAttributes": {
+    "22": {
+      "label": "SSH"
+    }
+  },
+  "overrideCommand": false
+}
