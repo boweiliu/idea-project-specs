@@ -1,12 +1,14 @@
 {
   "name": "Text Editors Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
   "forwardPorts": [22],
   "portsAttributes": {
     "22": {
       "label": "SSH"
     }
   },
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y curl nano vim neovim openssh-client openssh-server procps && sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* && sudo ssh-keygen -A && curl -sSf https://sshx.io/get | sudo sh",
-  "postStartCommand": "sudo mkdir -p /run/sshd && (pgrep -x sshd >/dev/null || sudo /usr/sbin/sshd) && (pgrep -x sshx >/dev/null || nohup sshx >/tmp/sshx.log 2>&1 &)"
+  "overrideCommand": false
 }
