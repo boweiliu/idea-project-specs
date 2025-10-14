@@ -13,6 +13,7 @@
 ## Subproject 2: High-Performance Worker IPC
 
 5. **Worker process model**: Single worker per Phoenix node, or a pool? How to handle worker crashes during expensive operations?
+    **Answer (2025-10-13)**: Treat workers as dedicated heterogenous services. Each worker owns a specific job/code segment with its own shmem arena, can be hot-reloaded or spun up/down independently, and idles in deep sleep when idle. No interchangeable pool; rely on a registry/dispatcher to route work to the correct specialist worker. Registry entries hold shmem handles and recovery metadata, dispatcher routes role-targeted jobs with backpressure handling, and supervisors capture error context for manual recovery callbacks.
 
 6. **Shared memory sizing**: Fixed size buffers or dynamic allocation? How to handle requests that don't fit in shmem region?
 
@@ -33,6 +34,7 @@
 13. **Prototype scope**: How many building types for MVP? Just extractors and assemblers, or also logistics (conveyors, pipes)?
 
 14. **Player interaction model**: Single-player only, or should architecture support multiplayer from the start? If multiplayer, how many concurrent players per world?
+    **Answer (2025-10-13)**: Target "soft multiplayer" — support multiple simultaneous clients architecturally for shared dev/demo sessions, but defer gameplay/griefing/permission mechanics.
 
 15. **World persistence**: Should worlds save between sessions? Per-player worlds or shared persistent world?
 
@@ -111,6 +113,7 @@
 48. **Telemetry/observability**: What metrics matter? Tick rate, message latency, worker utilization, active session count, cache hit rate?
 
 49. **Development priority**: Which subproject to implement first? Dependencies: Messaging (7) needed early? Client (4) can be parallel to backend?
+    **Answer (2025-10-13)**: Plan to advance the major subprojects in parallel so teams can iterate concurrently; sequence dependencies case-by-case instead of hard serial ordering.
 
 50. **Data flow**: Does simulation read from cache (6), or cache mirrors simulation state? Who owns authoritative state?
 
