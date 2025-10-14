@@ -10,20 +10,8 @@
 - Test button to playback single chunk or full stream
 **Verification**: Human listens to playback and confirms audio quality
 
-### Task 2a: AssemblyAI Streaming POC
-**Scope**: Standalone script that sends hardcoded audio to AssemblyAI
-**Deliverable**: Script that streams audio file to API and prints transcribed text
-**Verification**: Measure latency, verify transcript accuracy against known text
-
-### Task 2b: Deepgram Streaming POC  
-**Scope**: Standalone script that sends hardcoded audio to Deepgram
-**Deliverable**: Script that streams audio file to API and prints transcribed text
-**Verification**: Measure latency, verify transcript accuracy against known text
-
-### Task 2c: Wispr Flow Streaming POC
-**Scope**: Standalone script that sends hardcoded audio to Wispr Flow
-**Deliverable**: Script that streams audio file to API and prints transcribed text  
-**Verification**: Measure latency, verify transcript accuracy against known text
+### Voice API Evaluation Tasks
+Tracked in project `05-voice-llm-transcription-comparison`.
 
 ### Task 3: ttyd + Claude Code Integration
 **Scope**: Web page that spawns and controls Claude Code via Phoenix backend
@@ -42,27 +30,8 @@
 
 ## Future Integration Tasks
 
-### Phase 0: Voice API Evaluation (3 parallel tasks, 1 day)
-
-#### Task 0.1: AssemblyAI Test Implementation
-**Scope**: Single HTML page with AssemblyAI WebSocket integration
-**Deliverable**: Working demo that records audio, streams to AssemblyAI, displays transcripts with latency metrics
-**Dependencies**: None
-
-#### Task 0.2: Deepgram Test Implementation  
-**Scope**: Single HTML page with Deepgram WebSocket integration
-**Deliverable**: Working demo that records audio, streams to Deepgram, displays transcripts with latency metrics
-**Dependencies**: None
-
-#### Task 0.3: Wispr Flow Test Implementation
-**Scope**: Single HTML page with Wispr Flow WebSocket integration  
-**Deliverable**: Working demo that records audio, streams to Wispr Flow, displays transcripts with latency metrics
-**Dependencies**: None
-
-#### Task 0.4: API Comparison Report (Sequential after 0.1-0.3)
-**Scope**: Test all three demos, measure performance, document findings
-**Deliverable**: Decision matrix with selected provider + rationale
-**Dependencies**: Tasks 0.1, 0.2, 0.3 complete
+### Voice API Evaluation
+Handled in project `05-voice-llm-transcription-comparison`, which delivers the provider recommendation and supporting report.
 
 ### Phase 1: Core Infrastructure (2 parallel tracks)
 
@@ -98,9 +67,9 @@
 **Dependencies**: Task 1.B.1
 
 #### Task 2.2: Transcription Integration  
-**Scope**: Connect voice UI to selected API from Phase 0
+**Scope**: Connect voice UI to selected API delivered by project `05-voice-llm-transcription-comparison`
 **Deliverable**: Real-time transcript display as user speaks
-**Dependencies**: Tasks 0.4, 1.B.2, 2.1
+**Dependencies**: Project 05 decision matrix, Tasks 1.B.2, 2.1
 
 #### Task 2.3: Terminal Injection
 **Scope**: Send transcribed text to ttyd WebSocket
@@ -126,9 +95,9 @@
 
 ### Parallelization Summary
 
-- **Phase 0**: 3 engineers can work on Tasks 0.1-0.3 simultaneously (1 day)
+- **Voice API Evaluation**: Conducted separately in project `05-voice-llm-transcription-comparison`
 - **Phase 1**: 2 engineers can work on Track A and Track B in parallel (1 day)
 - **Phase 2**: Sequential but fast iterations (2 days)
 - **Phase 3**: Final integration and polish (1 day)
 
-**Total Timeline**: 5 days with 3 engineers, or 7-8 days with 2 engineers
+**Total Timeline (post-provider selection)**: 4 days with 3 engineers, or 6 days with 2 engineers
