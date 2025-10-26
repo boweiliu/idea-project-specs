@@ -1,3 +1,16 @@
+V2 Goals
+
+1. A task tracking system where both the tasks and the task deliverables (in the forms of tech specs, docs, or psuedocode) are all tracked in git, along with metadata
+2. Basically Linear + Linear metadata, all backed by sql structure which is then physically backed by git and git-compatible. 
+  a. at this rate make the table metaschema itself also backed in git.
+3. Make the rest API support a live syncing web frontend eventually, as well as vim or local text IDEs
+4. live sync between git state and db state
+5. Make it possible to also live bidir sync to an actual task tracking system (eg Linear/trello)
+6. Optimized for flows in which LLM planning agents help draft specs, and for which the final outbound spec artifacts are destined for LLM coding agents
+
+--
+
+
 
 Goals
 
@@ -57,6 +70,13 @@ Simplest db-ificiation of git ==
   * mayybe: drop latest?
 2. table, "directories_hashed" with a view table "directories_latest". Contains every directory
   * mayybe: drop latest?
-3. table, "commits_hashed". Each commit has 1 or more 
+3. table, "commits_hashed". Each commit has 1 or more parents and exactly 1 root tree ref.
 
 
+--
+
+How to solve the "commit on every keystroke" problem?? maybe: do it with a configurable "idle time" delay, and also give me a manual button too.
+
+--
+
+want : easy to manage and access old versions of specs.
