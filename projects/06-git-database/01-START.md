@@ -10,8 +10,9 @@ Goals
 
 Steal ideas from ideaflow.app:
 
-1. Link stuff via "+" and then it gets embedded in a little text box
+1. Link stuff via "+" and then it gets embedded in a little text box. backlinks
 2. Hash tags via "#"
+3. Cmd-m/ctrl-m to add a new entry separated by divider to the top of the stream
 
 Still need backcompat to directory tree....
 
@@ -38,5 +39,24 @@ motivation:
 --
 
 sidetrack: it would also be nice to put a filesystem proxy in between the process and the real syscalls so that we can intercept them at creation time and fire our own events. Not sure if that's possible, or would we have to recompile python/claude/c etc.
+
+--
+
+WHAT ARE WE DOING
+1. context dumping prior ideas
+  a. Could use more actual use cases if I can remember them
+2. Refining scope and possibly forking into separate projects if needed
+3. jotting down unrelated threads
+
+
+--
+
+Simplest db-ificiation of git ==
+
+1. table, "files_hashed" with a view table "files_latest" . Contains every file snapshot ever
+  * mayybe: drop latest?
+2. table, "directories_hashed" with a view table "directories_latest". Contains every directory
+  * mayybe: drop latest?
+3. table, "commits_hashed". Each commit has 1 or more 
 
 
