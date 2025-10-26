@@ -6,7 +6,8 @@ V2 Goals
 3. Make the rest API support a live syncing web frontend eventually, as well as vim or local text IDEs
 4. live sync between git state and db state
 5. Make it possible to also live bidir sync to an actual task tracking system (eg Linear/trello)
-6. Optimized for flows in which LLM planning agents help draft specs, and for which the final outbound spec artifacts are destined for LLM coding agents
+6. Optimized for flows in which LLM planning agents help draft specs, and for which the final outbound spec artifacts are destined for LLM coding agents.
+  Inbound and outbound connections/triggers are possible which enable the above. Like supporting syncing across multiple clients (via git obviously) to enable this inside agent environments.
 
 --
 
