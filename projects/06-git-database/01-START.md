@@ -13,6 +13,14 @@ Steal ideas from ideaflow.app:
 1. Link stuff via "+" and then it gets embedded in a little text box
 2. Hash tags via "#"
 
+Still need backcompat to directory tree....
+
+--
+Strongly consider:
+* tree visualization of files (left to right as usu)
+* tree visualization of commits (top flowing down as usu)
+* tree visualization of TODOs (left to right)
+
 --
 
 I wonder if there are any tools to bring live collab editing to vim... ideally i'd like a vim buffer which acts smart like the ideaflow page.
