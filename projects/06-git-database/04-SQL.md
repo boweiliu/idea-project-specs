@@ -8,6 +8,7 @@ SQL layer:
   - avoid booleans in favor of links (evidence allows verify)
   - content-hash where possible; but note that you will have to recompute if so
   - explicit backlinks wherever possible (saves on reverse lookup; can always optimize out later)
+    - Note that if you have the content, you can find its sha by hashing; so to backlink, we should always store in metadata the primary key of the content alongside its blob sha
 
 All tables share
 ```
@@ -58,20 +59,47 @@ table: hypers
 
 * This represents a block of hypertext. The format is plain text OR markdown.
 * Links are represent using the syntax `[plaintext][target_key]` or `[inlined_target_key]`, similar to markdown (https://spec.commonmark.org/0.30/#link-label)
-* Here `target_key` can be any string. Duplicated keys should be disambugated by appending to it eg `{myKey}` to `{myKey.d81dc}`
+* Here `target_key` can be any string. Duplicated keys should be disambugated by appending to it eg `{myKey}` to `{myKey.d81dcIsThePrimaryKeyOfTheResolverPair}`
 * Encouraged to use camel case or other programmer-friendly naming conventions. Spaces and periods are prohibited.
 * The link target can be specified either: inline; on the following line; or anywhere in the file. Using whitespace to align is encouraged.
+* The link target should be wrapped in {} to indicate that it is not a standard markdown url link but needs to be resolved by this project, the git <> db sync.
 
 ```
 for instance if your text is this line which links to [this other doc]
-* Valid link targets are: the leading characters of the sha hash of any content (if unambiguous);
-  - eg "
-* or, the leading characters of the stable_id of any record (if unambiguous);
-* or, the leading characters of any filename (if unambiguous);
-* or, the leading characters of any filename prefixed by some trailing components of its absolute path (if unambiguous);
-* or, the leading characters of any filename prefixed by some trailing components of its relative path relative to any of the locations of the current file (if unambiguous);
+                                                      [this other doc]: {c9818f}
+then that's the best way to resolve the link. but you can try [inline]({c9818f}) as well.
+```
+
+* Valid link targets that resolve to stable ids:
+3 or, the leading characters of the `stable_id` of any record, possibly prefixed by the table name (if unambiguous);
+  - eg "c9d9fa" or "tasks-c9"
+4 or, the leading characters of any filename (if unambiguous);
+  - eg "04-SQL"
+5 or, the leading characters of any filename prefixed by the prefixes of some trailing components of its absolute path (if unambiguous);
+  - eg "06-git/04-SQL"
+6 or, the leading characters of any filename prefixed by some trailing components of its relative path relative to any of the locations of the current file (if unambiguous);
+  - eg "../05/01"
+7 or, any of 3-6 suffixed with @HEAD or @latest
+8 or, a blob from (2) suffixed with @HEAD or @latest which turns it from a snapshot to the latetst version of the object pointed to.
+
+* Valid link targets that resolve to snapshots:
+1 the leading characters of the sha hash of any content (if unambiguous);
+  - eg "c9d9fa" or "c9"
+2 the leading characters of the sha hash of any content prefixed with its git type (blob/commit/tree/tag) (if unambiguous);
+  - eg "blob-c9d9fa" or "blob-c9"
+9 or, any of 3-6 suffixed with @ and then a hash of anything (usually commit) containing a version of that ref
+  - eg "04-SQL@c9"
+10 or, a blob from (2) suffixed with @ and then a hash of anything (usually commit) containing a version of the object pointed to
+  - eg "blob-c8d891@c9"
+
+11 Any of 1-10, suffixed by `#<lineno>` where lineno is an int indicating the line number of the targeted file or record
+12 Any of 1-10, suffixed by `#<lineno>,<colno>` where lineno, colno are ints indicating the line number and col number of the targeted file or record
+13 Any of 1-10, suffixed by `#<fragment>` where fragment is a heading or some other sort of identifier in the targeted file
+14 Any of 1-10, suffixed by `#<record.key>` if the object referred to is a schema'd object and record.key is a field in the record
+15 Any of 1-10, suffixed by `#<record.key>#<any of 11-13>` if the object referred to is a schema'd object and record.key is a field in the record which resolves to a text or hypertext or file
 
 
+table: hypers
 ```
 <all the standard appendonly/crdt/external preamble>
 format               str<enum>
@@ -108,7 +136,7 @@ target_table         str OPTIONAL
   -- should be a table name, e.g. "tasks". Defaults to "hypers"
 target_stable_id     str
 target_snapshot_id   str OPTIONAL
-  -- null: this is a ref to @latest
+  -- null means that this resolves to a ref to "latest" i.e. @HEAD
 target_field         str OPTIONAL
 ```
 
