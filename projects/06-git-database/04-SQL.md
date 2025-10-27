@@ -100,11 +100,13 @@ doc_type             str(enum)
   -- binary - just bytes, no links allowed. images and other binaries.
   -- symlink - the ordinary git symlink. as usual, relative to its cwd
   -- record - a generic sql record row, serialized as e.g. json. Schema should be linked too.
-  --  task - see above, has a bunch of task metadata, and then also contains hyper in the body
-  -- maybe computed / file views are an example of this?
+  -- eg  task - see above, has a bunch of task metadata, and then also contains hyper in the body
+  -- maybe computed / file views are an example of records? otherwise it's a separate type
   -- TODO: should we have a special case for empty docs (eg dirs)?
+
+TODO: what goes here? some sort of polymorphic contents_id?
 ```
 
 
 
-
+Table:
