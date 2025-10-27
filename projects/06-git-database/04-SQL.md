@@ -65,7 +65,11 @@ table: hypers
 ```
 for instance if your text is this line which links to [this other doc]
 * Valid link targets are: the leading characters of the sha hash of any content (if unambiguous);
+  - eg "
+* or, the leading characters of the stable_id of any record (if unambiguous);
 * or, the leading characters of any filename (if unambiguous);
+* or, the leading characters of any filename prefixed by some trailing components of its absolute path (if unambiguous);
+* or, the leading characters of any filename prefixed by some trailing components of its relative path relative to any of the locations of the current file (if unambiguous);
 
 
 ```
