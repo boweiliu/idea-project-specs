@@ -18,3 +18,4 @@
 13. What are we not? (we're not linear, we're not get-shit-done app, we're not even primarily the UI)
 
 14. How to implement the sql proxy / git converter?
+
