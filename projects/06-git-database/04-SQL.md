@@ -118,7 +118,7 @@ table: `hyper_lookups`
 <all the standard appendonly/crdt/external preamble>
 referrer_ids         list<TYPED_ID<hypers.stable>>
   -- list of places this resolver table is used.
-entries              list<TYPED_ID<_resolver_pairs>>
+resolveer_entries    list<TYPED_ID<_resolver_pairs>>
   -- unordered list of key-value pairs.
   -- the keys in resolver_pairs can be duplicated.
 ```
@@ -131,7 +131,7 @@ This is an internal table, plus its immutable, so it doesn't have any of the mut
 snapshot_id          TYPED_ID<this> PKEY
   -- only named as snapshot for consistency
 target_key           str
-  -- the key used for lookup; if this is duplicated, dedupe via the snapshot_id
+  -- the key used for lookup; can be duplicated, in which case the spec and human authors should disambiguate as needed.
 target_table         str OPTIONAL
   -- should be a table name, e.g. "tasks". Defaults to "hypers"
 target_stable_id     str
@@ -142,12 +142,18 @@ target_field         str OPTIONAL
 
 
 table: docs
+
+a doc represents the most generic sort of standalone content. it contains some metadata and 1 or more hypers (hypertext blocks).
+Each hypertext block consists of plaintext (including plaintext hresolver info), and a linked sql hyper ref lookup table.
 ```
+<all the standard appendonly/crdt/external preamble>
 parent_ids           list<TYPED_ID<this.stable>>
   -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
-author_ids
-hyper_ids
+author_ids           list<str>
+is_tag               bool
+hyper_ids            list<TYPED_ID<hypers>>
 ```
+
 
 
 
