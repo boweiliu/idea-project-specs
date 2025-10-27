@@ -92,11 +92,11 @@ permissions          str
   -- needed for compatibility with git, format is like 100644 file or 040000 dir. we almost never care
 
 doc_type             str(enum)
-  -- task, text, or raw
-  -- task - see above, has a bunch of task metadata, and then also contains text
-  -- text - see below, has links
-  -- raw - just bytes
-
+  -- task, hyper, raw
+  -- task - see above, has a bunch of task metadata, and then also contains hyper in the body
+  -- hyper - see below, has usually utf8 text and any number of links
+  -- raw - just bytes, no links allowed. images and other binaries.
+  -- TODO: should we have a special case for empty docs (eg dirs)?
 ```
 
 
