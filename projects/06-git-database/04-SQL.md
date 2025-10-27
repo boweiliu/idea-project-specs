@@ -75,7 +75,7 @@ blob int[,int]*
 ```
 e.g. `blob 38,1214,1399` for a 3-part file with 38 bytes followed by 1214 bytes followed by 1399 bytes.
 e.g. `blob 123-4-123-4-123 for a 3-part file with 2 4-byte delimiters (maybe: "---\n"?)
-Or maybe a variant based on the multipart file upload syntax
+Or maybe a variant based on the multipart file upload syntax (except removing the stupid \r\n--<boundary>\r\n wrapping)
 e.g. `boundary12=|--DELIM--|\n` for a file that uses the 12-byte delim "|--DELIM--|\n"
 
 
