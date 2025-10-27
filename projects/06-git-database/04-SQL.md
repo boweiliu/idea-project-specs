@@ -96,6 +96,7 @@ doc_type             str(enum)
   -- task - see above, has a bunch of task metadata, and then also contains hyper in the body
   -- hyper - see below, has usually utf8 text and any number of links
   -- raw - just bytes, no links allowed. images and other binaries.
+  -- computed - (maybe) a file with no original content but references snippets of other hypers.
   -- TODO: should we have a special case for empty docs (eg dirs)?
 ```
 

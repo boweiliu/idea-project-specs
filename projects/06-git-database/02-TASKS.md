@@ -14,7 +14,7 @@
 
 11. Problem: tasks live most naturally on the main branch, autopushed, but task deliverables (code diffs) need to be branched off of main or whatever. 
     For instance - Sculptor starting off main with a task like "Take this open MR, grab context from it and make a stacked fix on top for me to review".
-12. Cite inspirations (zed, ideaflow, pairing mode == bidir sync everything)
+12. Cite inspirations (zed, ideaflow, pairing mode == bidir sync everything, hypercard)
 13. What are we not? (we're not linear, we're not get-shit-done app, we're not even primarily the UI)
 
 14. How to implement the sql proxy / git converter?
