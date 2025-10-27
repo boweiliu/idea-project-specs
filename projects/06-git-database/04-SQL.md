@@ -88,7 +88,7 @@ name                 utf8_str
 parent_directory     TYPED_ID (docs) (optional)
   -- can be null only if this is the root. must refer to a docs entry with is_directory=true
 permissions          str
-  -- needed for compatibility with git. we almost never care
+  -- needed for compatibility with git, format is like 100644 file or 040000 dir. we almost never care
 
 ```
 
