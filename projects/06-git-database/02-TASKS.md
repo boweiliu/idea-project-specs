@@ -19,3 +19,6 @@
 
 14. How to implement the sql proxy / git converter?
 
+15. can we get a jq-like program to just explore the "named pointer nest"?
+16. Considering the ui/ux, we want to "tooltip the tooltips" and have good flows for exploring
+17. as a follow-on, it seems like we would also like to store an "annotated cursor position diagram graph" as a context for tasks to reference.

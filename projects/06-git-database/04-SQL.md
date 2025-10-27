@@ -37,7 +37,9 @@ properties           jsonb
 assignee_id          TYPED_ID (agents)
 creator_id           TYPED_ID (agents)
 title                utf8_str(optional)
-  -- optional. should probably not contain fancy links.
+  -- optional. should probably not contain fancy links. 
+  -- TODO: maybe we can merge this with body?
+
 body                 utf8_str(optional)
   -- can contain links to other tasks by snapshot_id or stable_id
   -- TBD how exactly
@@ -89,14 +91,17 @@ name                 utf8_str
 parent_directory     TYPED_ID (docs) (optional)
   -- can be null only if this is the root. must refer to a docs entry with is_directory=true
 permissions          str
-  -- needed for compatibility with git, format is like 100644 file or 040000 dir. we almost never care
+  -- needed for compatibility with git, we almost never care
+  -- format is like 100644 file or 040000 dir or 120000 symlink
 
 doc_type             str(enum)
-  -- task, hyper, raw
-  -- task - see above, has a bunch of task metadata, and then also contains hyper in the body
+  -- hyper, binary, record, symlink
   -- hyper - see below, has usually utf8 text and any number of links
-  -- raw - just bytes, no links allowed. images and other binaries.
-  -- computed - (maybe) a file with no original content but references snippets of other hypers.
+  -- binary - just bytes, no links allowed. images and other binaries.
+  -- symlink - the ordinary git symlink. as usual, relative to its cwd
+  -- record - a generic sql record row, serialized as e.g. json. Schema should be linked too.
+  --  task - see above, has a bunch of task metadata, and then also contains hyper in the body
+  -- maybe computed / file views are an example of this?
   -- TODO: should we have a special case for empty docs (eg dirs)?
 ```
 
