@@ -18,8 +18,9 @@ schema_ver           str(enum)
 serializer_ver       str(enum)
   -- stores a reference to the implementation of HOW to serialize this sql model into the file
   -- consequently this also determines what the hash ends up as
-blob_hash            hex(128)
+blob_hash            bytes(128)
   -- stores the git blob sha. we can precompute this so it should just work.
+  -- stored as raw binary but we (and everyone else) works with this as a hex string.
 
 externally_owned     bool
 external_id_type     str(enum)(optional)
@@ -89,6 +90,12 @@ parent_directory     TYPED_ID (docs) (optional)
   -- can be null only if this is the root. must refer to a docs entry with is_directory=true
 permissions          str
   -- needed for compatibility with git, format is like 100644 file or 040000 dir. we almost never care
+
+doc_type             str(enum)
+  -- task, text, or raw
+  -- task - see above, has a bunch of task metadata, and then also contains text
+  -- text - see below, has links
+  -- raw - just bytes
 
 ```
 
