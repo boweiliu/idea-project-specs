@@ -57,11 +57,14 @@ For instance:
 table: hypers
 
 * This represents a block of hypertext. The format is plain text OR markdown.
-* Links are represent using the syntax `[target_key]`, similar to markdown (https://spec.commonmark.org/0.30/#link-label)
-* Here `target_key` can be any string. Duplicated keys should be disambugated by appending to it eg `{f}` to `{f.d81dc}`
+* Links are represent using the syntax `[plaintext][target_key]` or `[inlined_target_key]`, similar to markdown (https://spec.commonmark.org/0.30/#link-label)
+* Here `target_key` can be any string. Duplicated keys should be disambugated by appending to it eg `{myKey}` to `{myKey.d81dc}`
 * Encouraged to use camel case or other programmer-friendly naming conventions. Spaces and periods are prohibited.
-* The link target can be specified either: inline; on the following line; or at the end of the file.
-* Valid link targets are: the leading characters of the sha hash of any content (if unambiguous0;
+* The link target can be specified either: inline; on the following line; or anywhere in the file. Using whitespace to align is encouraged.
+
+```
+for instance if your text is this line which links to [this other doc]
+* Valid link targets are: the leading characters of the sha hash of any content (if unambiguous);
 * or, the leading characters of any filename (if unambiguous);
 
 
