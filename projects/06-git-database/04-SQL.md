@@ -8,14 +8,15 @@ snapshot_id          ID
 stable_id            ID 
   -- allows us to update tasks by referring to their stable id
 readable_id          str
-  -- how humans refer to this task. linear
+  -- how humans refer to this task, e.g. "GT-001"
 external_id_type     str
 external_id          str
   -- data to connect to another service, if this database entry is supposed to be managed elsewhere
 title                utf8_str
 body                 utf8_str
-
+  -- can contain links to other tasks by snapshot_id
 ```
 
+I think... this is an append-only table, so this should be git-backed by a bunch of files, one per `stable_id`
 
 
