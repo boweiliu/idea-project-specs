@@ -46,6 +46,8 @@ table: docs has all of the above, PLUS
 parent_doc_id        list<TYPED_ID<doc.stables>>
   -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
 type                 str<enum>
+  -- hyper, record, binary
+```
 
 
 
@@ -66,6 +68,15 @@ blob_hash            bytes(128)
   -- stored as raw binary but we (and everyone else) works with this as a hex string.
 
 ```
+
+maybe use the git style: 
+```
+blob int[,int]*
+```
+e.g. `blob 38,1214,1399` for a 3-part file with 38 bytes followed by 1214 bytes followed by 1399 bytes.
+e.g. `blob 123-4-123-4-123 for a 3-part file with 2 4-byte delimiters (maybe: "---\n"?)
+Or maybe a variant based on the multipart file upload syntax
+e.g. `boundary12=|--DELIM--|\n` for a file that uses the 12-byte delim "|--DELIM--|\n"
 
 
 
