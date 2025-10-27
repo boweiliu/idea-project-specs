@@ -9,6 +9,18 @@ V2 Goals
 6. Optimized for flows in which LLM planning agents help draft specs, and for which the final outbound spec artifacts are destined for LLM coding agents.
   Inbound and outbound connections/triggers are possible which enable the above. Like supporting syncing across multiple clients (via git obviously) to enable this inside agent environments.
 
+Type of project
+
+1. showcase - show how easy it is to manipulate git index and how nice git-backed ops can be
+2. research - see if it's a useful tool and if so add more features. but keep it basic first.
+
+Concepts
+1. Tickets - if meant for human consumption, they have links to context on the project and affordances for forking subtickets or related ideas. It should be easy to remember "why are we doing this and where to find the info".
+ If meant for LLM consumption, there's a pipeline process of: asking for more context if needed; assigning back a review task; and therefore providing review criteria + instructions for the human.
+2. Tickets are linked to commits & branches, but users usually interact with the former
+3. Supports multi-project workflows as well as single-project. Humans naturally get creative ideas at random times. Tickets can be forked from documents or from other tickets, or as top-level "random what if".
+
+
 --
 
 
