@@ -54,11 +54,12 @@ external_mirror_info str<enum> OPTIONAL
 
 For instance:
 
-table: hypers has all of the above, PLUS
+table: hypers
+This represents a block of hypertext
+
 
 ```
-parent_ids           list<TYPED_ID<this.stable>>
-  -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
+<all the standard appendonly/crdt/external preamble>
 format               str<enum>
   -- defaults to `utf8_str`, but can also be `binary` or `utf8_jsonl` or something.
 contents_raw         bytes OPTIONAL
@@ -72,6 +73,7 @@ resolved_by          TYPED_ID<resolvers> OPTIONAL
 
 table: `hyper_lookups`
 ```
+<all the standard appendonly/crdt/external preamble>
 referrer_ids         list<TYPED_ID<hypers.stable>>
   -- list of places this resolver table is used.
 entries              list<TYPED_ID<_resolver_pairs>>
@@ -99,9 +101,11 @@ target_field         str OPTIONAL
 
 table: docs
 ```
+parent_ids           list<TYPED_ID<this.stable>>
+  -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
 author_ids
 hyper_ids
-
+```
 
 
 
@@ -128,7 +132,6 @@ e.g. `blob 38,1214,1399` for a 3-part file with 38 bytes followed by 1214 bytes 
 e.g. `blob 123-4-123-4-123 for a 3-part file with 2 4-byte delimiters (maybe: "---\n"?)
 Or maybe a variant based on the multipart file upload syntax (except removing the stupid \r\n--<boundary>\r\n wrapping)
 e.g. `boundary12=|--DELIM--|\n` for a file that uses the 12-byte delim "|--DELIM--|\n"
-
 
 
 --
