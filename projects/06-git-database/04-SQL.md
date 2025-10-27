@@ -3,8 +3,8 @@ idea: have the sql layer, distinct from the tables that help out with persistenc
 SQL layer:
 
   - concepts:
-  - be crdt friendly (dag)
-  - be migration friendly (hold multiple active schema versions at once)
+  - be crdt friendly (dag: plural parents, children, references etc. where possible)
+  - be migration friendly (maintain multiple active schema versions at once)
   - avoid booleans in favor of links (evidence allows verify)
   - content-hash where possible; but note that you will have to recompute if so
   - explicit backlinks wherever possible (saves on reverse lookup; can always optimize out later)
@@ -28,15 +28,21 @@ created_from         list<TYPED_ID<this.stable>>
 deleted_into         list<TYPED_ID<this.stable>> OPTIONAL
   -- if we deleted this record and split it to other locations. can be empty if we just plain deleted.
   -- null if this is NOT deleted.
+is_deleted           bool COMPUTED
 
 externally_owned     bool COMPUTED
-  -- could be a computed field here, but inculded for ease of algebraically typing
-external_id_type     str<enum> OPTIONAL
-external_id          str OPTIONAL
+  -- could be a computed field here, but included for ease of algebraically typing
+external_owner       str<enum> OPTIONAL
   -- data to connect to another service, if this database entry is supposed to be managed elsewhere
+  -- this contains the name of the external service, and the entity type name(s) over there
+external_id_type     str OPTIONAL
+external_ids         list<str> OPTIONAL
+  -- entity type name(s) over there and their ids. plural since our mapping may not be 1:1. 
+  -- precise implementation of mapping is referred by:
 external_schema_ver  str<enum> OPTIONAL
   -- schema_ver stores info about which code is used to translate this entry to the remote.
 external_mirror_info str<enum> OPTIONAL
+  -- metadata about the semantics of the translation/import. maybe sample values:
   -- exact: this record contains a full and exact mirror of all external data
   --   (in which case we should probably also save the timestamp of last sync)
   -- lazy: this record is incomplete and data should be fetched laizly from external source
@@ -48,31 +54,53 @@ external_mirror_info str<enum> OPTIONAL
 
 For instance:
 
-table: docs has all of the above, PLUS
+table: hypers has all of the above, PLUS
 
 ```
-parent_doc_id        list<TYPED_ID<docs.stable>>
+parent_ids           list<TYPED_ID<this.stable>>
   -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
-
-is_schemad           bool COMPUTED
-  -- Is this doc a structured sql record, or more akin to a text blob?
-  -- could be a computed field here, but included for ease of algebraic typing
-schemad_by           str OPTIONAL
-  -- if the is_schemad TRUE -- then this field holds the table_name
-  -- else this field is null
-contents_id          str OPTIONAL
-  -- if the is_schemad TRUE -- then this field holds the snapshot_id ref of the table record
-  -- else this field is null
-contents_raw         str OPTIONAL
-  -- if the is_schemad TRUE -- then this is null
-  -- else this field holds the raw text/binary contents
-hypered_by           TYPED_ID<hypers> OPTIONAL
+format               str<enum>
+  -- defaults to `utf8_str`, but can also be `binary` or `utf8_jsonl` or something.
+contents_raw         bytes OPTIONAL
+  -- holds the raw text/binary contents
+  -- optional - can just leave this null
+resolved_by          TYPED_ID<resolvers> OPTIONAL
   -- Does this doc contain resolvable hyperlinks to other docs? Or is it plain old text/binary?
-  -- if the former -- then this field holds the ref to the hyperlink lookup field.
+  -- if the former -- then this field holds the ref to the hyperlink lookup field used for resolving.
   -- if the latter -- then this field is null
 ```
 
+table: `hyper_lookups`
+```
+referrer_ids         list<TYPED_ID<hypers.stable>>
+  -- list of places this resolver table is used.
+entries              list<TYPED_ID<_resolver_pairs>>
+  -- unordered list of key-value pairs.
+  -- the keys in resolver_pairs can be duplicated.
+```
 
+
+table: `_resolver_pairs`
+This is an internal table, plus its immutable, so it doesn't have any of the mutable/crdt/external bullshit
+
+```
+snapshot_id          TYPED_ID<this> PKEY
+  -- only named as snapshot for consistency
+readable_key         str
+  -- the key used for lookup; if this is duplicated, dedupe via the snapshot_id
+target_table         str OPTIONAL
+  -- should be a table name, e.g. "tasks". Defaults to "hypers"
+target_stable_id     str
+target_snapshot_id   str OPTIONAL
+  -- null: this is a ref to @latest
+target_field         str OPTIONAL
+```
+
+
+table: docs
+```
+author_ids
+hyper_ids
 
 
 
