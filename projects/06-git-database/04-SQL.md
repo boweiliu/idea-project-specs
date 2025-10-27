@@ -1,3 +1,76 @@
+idea: have the sql layer, distinct from the tables that help out with persistence (i.e. transforming to git).
+
+SQL layer:
+
+  - concepts:
+  - be crdt friendly (dag)
+  - be migration friendly (hold multiple active schema versions at once)
+  - avoid booleans in favor of links (evidence allows verify)
+  - explicit backlinks wherever possible (saves on reverse lookup; can always optimize out later)
+
+All tables share
+```
+snapshot_id          TYPED_ID<this> PKEY
+  -- this is a append-only table, this is the primary key. unrelated to anything
+prior_snapshot_ids   list<TYPED_ID<this>>
+  -- backlinks to form a dag in case of crdt merge
+stable_id            TYPED_ID<this.stable>
+  -- allows us to update this by referring to the stable id
+schema_ver           str<enum>
+  -- hehe. need to figure this out across git branched migrations. maybe: git hash of the code?
+created_at           timestamp
+created_trace        str<uuid>
+  -- trace_id for debugging
+
+created_from         list<TYPED_ID<this.stable>>
+  -- if we deleted 2 record and they now refer here. can be empty.
+deleted_into         list<TYPED_ID<this.stable>> OPTIONAL
+  -- if we deleted this record and split it to other locations. can be empty if we just plain deleted.
+  -- null if this is NOT deleted.
+
+externally_owned     bool
+external_id_type     str<enum> OPTIONAL
+external_id          str OPTIONAL
+external_schema_ver  str<enum> OPTIONAL
+  -- data to connect to another service, if this database entry is supposed to be managed elsewhere
+  -- schema_ver stores info about which code is used to translate this entry to the remote.
+
+<other fields follow>
+```
+
+For instance:
+
+table: docs has all of the above, PLUS
+
+```
+parent_doc_id        list<TYPED_ID<doc.stables>>
+  -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
+type                 str<enum>
+
+
+
+
+
+
+
+
+
+Serialization layer:
+
+```
+serializer_ver       str(enum)
+  -- stores a reference to the implementation of HOW to serialize this sql model into the file
+  -- consequently this also determines what the hash ends up as
+blob_hash            bytes(128)
+  -- stores the git blob sha. we can precompute this so it should just work.
+  -- stored as raw binary but we (and everyone else) works with this as a hex string.
+
+```
+
+
+
+--
+
 How to do the sql to git part?
 
 Table: tasks
@@ -109,4 +182,4 @@ TODO: what goes here? some sort of polymorphic contents_id?
 
 
 
-Table:
+iTable:
