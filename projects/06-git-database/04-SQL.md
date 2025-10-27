@@ -14,7 +14,7 @@ All tables share
 ```
 snapshot_id          TYPED_ID<this> PKEY
   -- this is a append-only table, this is the primary key. unrelated to anything
-prior_snapshot_ids   list<TYPED_ID<this>>
+prior_snapshot_ids   bag<TYPED_ID<this>>
   -- backlinks to form a dag in case of crdt merge
 stable_id            TYPED_ID<this.stable>
   -- allows us to update this by referring to the stable id
@@ -24,9 +24,9 @@ created_at           timestamp
 created_trace        str<uuid>
   -- trace_id for debugging
 
-created_from         list<TYPED_ID<this.stable>>
+created_from         bag<TYPED_ID<this.stable>>
   -- if we deleted 2 record and they now refer here. can be empty.
-deleted_into         list<TYPED_ID<this.stable>> OPTIONAL
+deleted_into         bag<TYPED_ID<this.stable>> OPTIONAL
   -- if we deleted this record and split it to other locations. can be empty if we just plain deleted.
   -- null if this is NOT deleted.
 is_deleted           bool COMPUTED
@@ -37,7 +37,7 @@ external_owner       str<enum> OPTIONAL
   -- data to connect to another service, if this database entry is supposed to be managed elsewhere
   -- this contains the name of the external service, and the entity type name(s) over there
 external_id_type     str OPTIONAL
-external_ids         list<str> OPTIONAL
+external_ids         bag<str> OPTIONAL
   -- entity type name(s) over there and their ids. plural since our mapping may not be 1:1. 
   -- precise implementation of mapping is referred by:
 external_schema_ver  str<enum> OPTIONAL
@@ -107,18 +107,18 @@ format               str<enum>
 contents_raw         bytes OPTIONAL
   -- holds the raw text/binary contents
   -- optional - can just leave this null
-resolved_by          TYPED_ID<resolvers> OPTIONAL
+resolved_by          bag<TYPED_ID<hyper_resolvers>> OPTIONAL
   -- Does this doc contain resolvable hyperlinks to other docs? Or is it plain old text/binary?
   -- if the former -- then this field holds the ref to the hyperlink lookup field used for resolving.
   -- if the latter -- then this field is null
 ```
 
-table: `hyper_lookups`
+table: `hyper_resolvers`
 ```
 <all the standard appendonly/crdt/external preamble>
-referrer_ids         list<TYPED_ID<hypers.stable>>
+referrer_ids         bag<TYPED_ID<hypers.stable>>
   -- list of places this resolver table is used.
-resolveer_entries    list<TYPED_ID<_resolver_pairs>>
+resolveer_entries    bag<TYPED_ID<_resolver_pairs>>
   -- unordered list of key-value pairs.
   -- the keys in resolver_pairs can be duplicated.
 ```
@@ -147,15 +147,36 @@ a doc represents the most generic sort of standalone content. it contains some m
 Each hypertext block consists of plaintext (including plaintext hresolver info), and a linked sql hyper ref lookup table.
 ```
 <all the standard appendonly/crdt/external preamble>
-parent_ids           list<TYPED_ID<this.stable>>
+parent_ids           bag<TYPED_ID<this.stable>>
   -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
-author_ids           list<str>
+  -- list because CRDT. unfortunately this means removing it is hard. Recommended appraoch is to shadow it
+author_ids           bag<TYPED_ID<agents>>
+file_name            str
+  -- not guaranteed to be unique per location. the implicit is that the most recently updated one shadows the rest, which are also present but disambiguated via suffix.
 is_tag               bool
-hyper_ids            list<TYPED_ID<hypers>>
+body                 TYPED_ID<hypers>
+  -- note that a single hyper is already CRDT-safe by contents
+properties           jsonb
+  -- maybe: comments? other body components? structured record of stuff point to other docs?
 ```
 
-
-
+table: tasks
+```
+readable_id          str
+  -- how humans refer to this task, e.g. "GT-001". may be non-unique in case of merge conflict
+status               str(enum)
+sorting_key          sortable
+  -- TBD. used to store order relative to other tasks when breaking ties
+  -- this is not very crdt friendly...
+properties           jsonb
+  -- other misc non-referntial properties, like size_estimate, priority_level, upvote_count
+assignee_id          bag<TYPED_ID<agents>>
+creator_id           bag<TYPED_ID<agents>>
+title                utf8_str
+  -- intentionally not a hyper
+body                 TYPED_ID<hypers>
+  -- note that a single hyper is already CRDT-safe by contents
+```
 
 
 
