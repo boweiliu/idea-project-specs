@@ -6,6 +6,7 @@ SQL layer:
   - be crdt friendly (dag)
   - be migration friendly (hold multiple active schema versions at once)
   - avoid booleans in favor of links (evidence allows verify)
+  - content-hash where possible; but note that you will have to recompute if so
   - explicit backlinks wherever possible (saves on reverse lookup; can always optimize out later)
 
 All tables share
@@ -28,14 +29,21 @@ deleted_into         list<TYPED_ID<this.stable>> OPTIONAL
   -- if we deleted this record and split it to other locations. can be empty if we just plain deleted.
   -- null if this is NOT deleted.
 
-externally_owned     bool
+externally_owned     bool COMPUTED
+  -- could be a computed field here, but inculded for ease of algebraically typing
 external_id_type     str<enum> OPTIONAL
 external_id          str OPTIONAL
-external_schema_ver  str<enum> OPTIONAL
   -- data to connect to another service, if this database entry is supposed to be managed elsewhere
+external_schema_ver  str<enum> OPTIONAL
   -- schema_ver stores info about which code is used to translate this entry to the remote.
+external_mirror_info str<enum> OPTIONAL
+  -- exact: this record contains a full and exact mirror of all external data
+  --   (in which case we should probably also save the timestamp of last sync)
+  -- lazy: this record is incomplete and data should be fetched laizly from external source
+  --   (which fields exactly are lazy???)
 
 <other fields follow>
+
 ```
 
 For instance:
@@ -43,10 +51,25 @@ For instance:
 table: docs has all of the above, PLUS
 
 ```
-parent_doc_id        list<TYPED_ID<doc.stables>>
+parent_doc_id        list<TYPED_ID<docs.stable>>
   -- can be empty list if no parent. this roughly corresponds to "location in file hierarchy"
-type                 str<enum>
-  -- hyper, record, binary
+
+is_schemad           bool COMPUTED
+  -- Is this doc a structured sql record, or more akin to a text blob?
+  -- could be a computed field here, but included for ease of algebraic typing
+schemad_by           str OPTIONAL
+  -- if the is_schemad TRUE -- then this field holds the table_name
+  -- else this field is null
+contents_id          str OPTIONAL
+  -- if the is_schemad TRUE -- then this field holds the snapshot_id ref of the table record
+  -- else this field is null
+contents_raw         str OPTIONAL
+  -- if the is_schemad TRUE -- then this is null
+  -- else this field holds the raw text/binary contents
+hypered_by           TYPED_ID<hypers> OPTIONAL
+  -- Does this doc contain resolvable hyperlinks to other docs? Or is it plain old text/binary?
+  -- if the former -- then this field holds the ref to the hyperlink lookup field.
+  -- if the latter -- then this field is null
 ```
 
 
