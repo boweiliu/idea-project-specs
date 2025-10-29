@@ -6,6 +6,11 @@ vanilla git has 3 types of things:
 * locally-linearly-versioned things, i.e. refs & symrefs (HEAD)
 * (weakly) fully-versioned things, the only examples of which are filenames as they appear in tree contents, and only if they aren't mv'd.
 
+These roughly correspond to the types of things a link can target:
+* immutable versions of files (specify either the commit or the blob sha)
+* a file at the current version of a ref or symref, for instance HEAD
+* a file in genericity (hmmm. don't really think this makes sense)
+
 --
 
 github file url pattern is
