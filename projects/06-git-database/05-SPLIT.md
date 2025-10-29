@@ -1,3 +1,13 @@
+Part I:
+
+vanilla git has 3 types of things:
+
+* hashables, which are immutable and content-addressed (commit, blob, tree)
+* locally-linearly-versioned things, i.e. refs & symrefs (HEAD)
+* (weakly) fully-versioned things, the only examples of which are filenames as they appear in tree contents, and only if they aren't mv'd.
+
+--
+
 github file url pattern is
 ```
 https://github.com/<owner>/<repo>/<type>/<ref>/<path>
