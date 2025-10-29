@@ -11,5 +11,5 @@ What if: we split the project up into 3 more simple project
 3. Layer a UI on top to help with task management specifically, and all
    doc types that are associated, e.g. context docs, commit chain of code commits
    as output, plus a MR description of the changes. a left/right comparison doc type.
-   And a system for managing this across repos and across clients (remember the git model
-   each client needs to have their own copy of the repo)
+   And a system for managing this across repos and across clients (remember the git model:
+   each writer client needs to have their own copy of the repo)
