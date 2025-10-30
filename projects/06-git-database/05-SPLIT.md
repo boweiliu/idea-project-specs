@@ -74,6 +74,13 @@ Metadata during links:
 
 We might want in future to refer to a single line within a context of range, eg L3 in L1-5, but will leave that for later.
 
+This already allows commenting on files github-style, but can be implemented in 2 different ways:
+
+1. The base file is the content file and it includes links out to comment blobs.
+   This is not as merge-friendly and it also corrupts the line numbers & content of the original file.
+2. The base file is left alone and comments are stored in a separate file with references to ranges on the base file that are where the comment applies, and then comments go there.
+   This enables multiple concurrent comments but necessitates a 3rd file to view the full file plus comments (since as is, the comment file does not refer to the full base file, only the ranges that get commented on)
+
 
 --
 
