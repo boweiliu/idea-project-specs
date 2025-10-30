@@ -1,3 +1,82 @@
+Trying part I again:
+
+Vanilla git has 5 things
+
+1. commits (hashed)
+2. trees (hashed)
+3. blobs (hashed)
+4. file names, in the tree content
+5. refs
+  a. special refs, like HEAD
+  b. branch names, like refs/heads/main
+  c. tags, like refs/tags/1.0
+  d. other crap, like refs/remotes/ and refs/stash
+
+  -- 
+  Semantically, there are 5 types of branches, and maybe 5 types of collaboration models
+  1. the current default branch, or main
+  2. Long-lived forks with no intention of being merged back in
+  3. Long-lived branches which are continually cross-merging
+  4. Short-lived feature branches, usually owned by 1 person, intended to be merged into a specific 
+     target branch, where merge conflicts are traditionally resolved on the feature side
+  5. Unnamed pairing branches that are co-owned by 2 or more people and merge conflicts happen
+     on a regular basis as both people merge into the branch. Usually called the same name but
+     on different remotes, e.g. X and remotes/origin/X.
+  (these 5 are probably irrelevant to this discussion)
+  --
+
+Of the 5 commit/tree/blobl/fname/refs:
+* commits refer to past history
+* blobs/trees are timeless
+* file names are mutable and exist across the full git branching history
+* refs are mutable, have a linear local log attached (reflog) which will never be reconciled remotely,
+  and point to commits which themselves have past histories.
+
+There's also a few more types of computed objects which gitlab/github have normalized:
+6. blames, aka git blame annotated files
+7. history/log, aka git log a file
+8. diff/compare/difflog, and these come in 3-4 flavors
+  a. A..B (summed commits of A that are not in B)
+  a. A...B (symmetric difference of the literal state of A vs. B)
+  a. A...B (summed commits of A that are not in the merge-base of A and B
+9. Comments on files or diffs
+10. Editable view of a file or raw views of a file, if the default is not that
+
+ -- 
+
+Going back how to link to things, let's go through all the types of things
+1. Commits. Great to link to -- the contents of a commit contain a couple of metadata lines for
+   parents, author, timestamp, and of course the commit message which can itself contain more links.
+2. trees/blobs. These don't make as much sense to link -- doing so is akin to inlining a text blob
+   or directory zip. We'll come back
+4. file names - these are the best thing to link to, markdown already has syntax. HOWEVER: just saying a file name doesn't give us any content. We also need to know a version to look it up at, which can be specified by:
+  a. commit hash - this makes us happy
+  b. branch name - i guess we will fetch the most recent version of that branch (as far as we know locally) and use it.
+  c. HEAD - We will interpret this to mean "do not change your git state from whatever it is you are using to view the current file, and look up using that".
+     For instance - if i'm currently on 99999, and i see a link referring to README.md@HEAD or just plain README.md (the @head is implied), then i'll look it up based on my current commit: 999999
+     ex. if i'm currently on 99999 but i see a link referring to README.md@888888, and in that doc I see a ref to PORTAL.md@HEAD, then i'm going to look up PORTAL.md@888888 -- the mental model is "in order to see README.md@8888, i had to check out an entire copy of the repo at 888888, so i should use that to resolve my HEAD
+     Reasoning: Suppose we are creating a new repo from scratch (no commits) and we would like 2 documents to refer to each other circularly. Well we don't have any commit to ref, so we have to use HEAD, otherewise it's impossible to form a circular loop if we try double-committing or committing and throwing away or something.
+     Reasoning: If we are looking at a past doc (e.g. digging up an old bug report) then HEAD is more helpful if it resolves to the state of the repo at that time, not the current version. Docs should never be able to link to future versions; the intention of HEAD is "look at that other doc which is probably more updated more frequently than this doc is, and so no one has to force update this doc whenever that one updates."
+    Note that this is indeed a bit inconsistent with refs/heads/BRANCH which says to fetch the most recent version of that branch, especially if i've currently checked out a repo copy which is at an old state of the branch. However doing so avoids complexity -- if the branch has been force pushed, it's not a guarantee that any of the commits in its past history are in its tip's commit history anymore. And timestamps cannot be sensibly compared across unmerged branches.
+
+
+ -- 
+Metadata during links:
+1. Linking to a generic file or commit -> links to the top of it
+2. We would also like to be able to refer to a specific line of a file
+   * 1-indexed as is standard. Newline terminated files help targeting the EOF
+3. or a specific (line,character) location of a file
+   * 1-indexed as is standard, again. May need to reserve "$" for the EOL location
+4. or a specific line range eg L1-5
+   * 1-indexed and inclusive, as is standard. So L1-2 includes 2 lines. Thus cannot have 0-len ranges
+5. or a specific character range, eg L1,3-L2,7
+   * 1-indexed and inclusive, as is standard. So L1-2 includes 2 lines. Thus cannot have 0-len ranges
+
+We might want in future to refer to a single line within a context of range, eg L3 in L1-5, but will leave that for later.
+
+
+--
+
 Part I:
 
 vanilla git has 3 types of things:
