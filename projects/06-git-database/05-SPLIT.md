@@ -1,3 +1,44 @@
+4 Questions
+
+1. Are ranges allowed as targets? Ans: yes, they help a lot with locating relevant info. 
+  - allowed: line ranges, line/col ranges, or mark ranges
+2. Are ranges + context allowed? Like "this line +/- 3 lines"? Ans: no, redundant and out of scope / can be managed by another layer. Rendering is not our concern -- we just want to denote "semantically this other thing is related..."
+3. Are custom marks allowed as link targets? Ans: yes and in fact encouraged. Explicit is better than implcit. Hoping for line numbers/col nums/exact string lookups to remain consistent is silly.
+4. How do we treat backlinks as a concept? Ans: second class. index O(1) backlinks - no. 
+
+actually, that's 8 questions
+
+5. Cross-repo references? Yes. Will need to know what the other repo resolves to using the gitconfig -- unfortunately git repos today are not yet IPFS'd with global uuids.
+6. Referencing "computed" properties like git blame, diffs? No. Just compute them and save them if needed.
+7. Tombstones/redirects/deprecation? Yes.
+8. Reuse of link tables? Yes, but only within a document, and even then discouraged. Explicit is better - you don't want your link targets changing on you. No "importing" link target defs from a common defs file -- that's how you get into recursive import hell. Just link there if you need to remember to keep it in sync.
+9. 3-way or higher links? No - just use extra links, or link out to a tag doc which manually stores backlinks.
+
+Things to build on top of this
+
+1. A cli tool to look up the current repo for backlinks to a given [file/line], using the technology inside git blame.
+2. Editor extensions for vim, IDEs, github/gitlab browser to enable following links.
+   a. And, add sensible features like viewing browse history (in the natural tree structure), and persisting that browse history to a linkable flat file.
+3. A format for storing a couple of links together with their relative screen positions, and a corresponding tmux + vim or IDE integration to save/load them.
+4. A precommit git hook to remind to update places that are linked to/from
+5. A format for adding review comments to files and/or diffs, and a tool for viewing said comments. Intended for decentralized code review.
+6. A vim or IDE workflow that lets a user default to writing stuff in one big file then shunting it out to other files post-hoc.
+7. Claude hook and file use / MCP extensions to let LLMs more easily follow links.
+8. Text renderer extensions that add metadata on top of the links to allow configuring inline-ness (quote-style) and editable-ness. See: "tooltip the tooltips"
+
+WHY we are doing something so trivially simple:
+1. Simple is better. It means other people can add bloat on top easily. Compare that to a complex idea where removing bloat is hard.
+2. Relatedly -- it's ripe to growing in other ways as well. Perhaps this could be extended to non-plaintext formats, like image or video. Perhaps we can bring about the return of HyperText.
+3. Enables connecting code to docs more directly - maybe you dont like inlining because you want your docs to be verbose, or maybe you want to inline code into your docs instead. Similarly for tests to docs/code.
+4. Easier to work across git versions -- especially since all the data is already there!! Switching branches can be clunky and there's frequently no need
+5. Git is the best CRDT of 50 years -- amazing offline support and supports multiplayer version control up to any number of collaborators. Local first. Building docs on top of it makes a lot of sense.
+6. Linking code <-> code is also useful if your code doesn't have an explicit dependency in the language but has an outo-of-band human dependency.
+7. All these are mainly for humans, but LLMs can also benefit quite heavily as well from having a good way to encode context.
+8. LLMs also love repeating information, which is tedious for humans, so compressing that into links is good for tokens and for sanity.
+9. Working with LLMs requires good specs. Specs which reference each other permit better information organization.
+
+--
+
 Trying part I again:
 
 Vanilla git has 5 things
