@@ -10,7 +10,7 @@ actually, that's 8 questions
 
 5. Cross-repo references? Yes. Will need to know what the other repo resolves to using the gitconfig -- unfortunately git repos today are not yet IPFS'd with global uuids.
 6. Referencing "computed" properties like git blame, diffs? No. Just compute them and save them if needed.
-7. Tombstones/redirects/deprecation? Yes.
+7. Tombstones/redirects/deprecation? Yes, but only at the file level
 8. Reuse of link tables? Yes, but only within a document, and even then discouraged. Explicit is better - you don't want your link targets changing on you. No "importing" link target defs from a common defs file -- that's how you get into recursive import hell. Just link there if you need to remember to keep it in sync.
 9. 3-way or higher links? No - just use extra links, or link out to a tag doc which manually stores backlinks.
 
@@ -112,6 +112,7 @@ Metadata during links:
    * 1-indexed and inclusive, as is standard. So L1-2 includes 2 lines. Thus cannot have 0-len ranges
 5. or a specific character range, eg L1,3-L2,7
    * 1-indexed and inclusive, as is standard. So L1-2 includes 2 lines. Thus cannot have 0-len ranges
+6. Or a specific searchable text - see http spec for [text fragments](...)
 
 We might want in future to refer to a single line within a context of range, eg L3 in L1-5, but will leave that for later.
 
