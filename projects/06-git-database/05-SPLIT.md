@@ -1,3 +1,85 @@
+Starting from the top again:
+
+## What is the project?
+
+Let's spec out a very small syntax on top of plaintext and git that allows semantic linking inclduing cross-commit.
+
+After that let's build a few simmilarly tiny applications that make working with such plaintext links smoother.
+
+## Background on git
+
+Conceptually, git has at least 5 types of things:
+1. objects in .git/objects, which are referred to by their hash:
+  a. commits, containing data in a specific plaintext format
+  b. trees, aka filesystem states, containing a csv-like plaintext structure
+  c. blobs, aka raw file contents
+2. refs, e.g. HEAD and refs/heads/`branch_name`, which are named pointers to commits or other refs
+3. Filename strings, which are used in trees to keep track of files and subtrees inside.
+
+## Link examples
+
+Markdown
+```md
+blah blah i love citing sources like [this][target_1]
+                                           [target_1]: /docs/file.md
+```
+
+or, code
+
+```python
+def fun_function():
+    pass # see [here][target_2]
+    #                [target_2]: /src/repo/file.py
+```
+
+This mirrors the standard md [reference](https://spec.commonmark.org/0.30/#link-label)
+which supports remote refs like
+```md
+juilus was [here][target]
+
+[target]: http://example.com/
+```
+
+## Link syntax spec
+
+### Targets
+
+Here's a list of things you are allowed to refer to, and what they mean
+
+Format
+```
+[<repo_spec>]<object_id>[@<version_id>][<local_specifier>]
+
+repo_spec is always optional and is of the form
+
+TODO(bowei)
+
+object_id can be:
+
+1. the hash of a commit
+2. the hash of a blob/tree
+3. a relative filename
+4. an absolute filename, relative to the root of the repo
+
+version_id is only relevant for relative or absolute filenames, and is disallowed otherwise. It can be:
+
+1. the hash of a commit
+2. a branch name, specified as `refs/heads/<branch_name>`
+3. the literal string `HEAD`
+
+local_specifier can be:
+
+1. a line number, 1-indexed
+2. a line and col number, 1-indexed
+3. a line range, 1-indexed and inclusive
+4. a line and col range to another line and col, 1-indexed and inclusive
+5. a string representing plaintext to search for, of the form 
+TODO(bowei)
+6. a mark aka anchor, like `#anc`
+
+
+---
+
 4 Questions
 
 1. Are ranges allowed as targets? Ans: yes, they help a lot with locating relevant info. 
@@ -10,7 +92,7 @@ actually, that's 8 questions
 
 5. Cross-repo references? Yes. Will need to know what the other repo resolves to using the gitconfig -- unfortunately git repos today are not yet IPFS'd with global uuids.
 6. Referencing "computed" properties like git blame, diffs? No. Just compute them and save them if needed.
-7. Tombstones/redirects/deprecation? Yes, but only at the file level
+7. Tombstones/redirects/deprecation? Yes, but only at the file level... ok fine maybe at the mark level too.
 8. Reuse of link tables? Yes, but only within a document, and even then discouraged. Explicit is better - you don't want your link targets changing on you. No "importing" link target defs from a common defs file -- that's how you get into recursive import hell. Just link there if you need to remember to keep it in sync.
 9. 3-way or higher links? No - just use extra links, or link out to a tag doc which manually stores backlinks.
 
@@ -111,7 +193,7 @@ Metadata during links:
 4. or a specific line range eg L1-5
    * 1-indexed and inclusive, as is standard. So L1-2 includes 2 lines. Thus cannot have 0-len ranges
 5. or a specific character range, eg L1,3-L2,7
-   * 1-indexed and inclusive, as is standard. So L1-2 includes 2 lines. Thus cannot have 0-len ranges
+   * 1-indexed ank inclusive, as is standard. So L1-2 includes 2 lines. Thus cannot have 0-len ranges
 6. Or a specific searchable text - see http spec for [text fragments](...)
 
 We might want in future to refer to a single line within a context of range, eg L3 in L1-5, but will leave that for later.
