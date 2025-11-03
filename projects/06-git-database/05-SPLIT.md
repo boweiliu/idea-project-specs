@@ -20,7 +20,7 @@ Conceptually, git has at least 5 types of things:
 
 Markdown
 ```md
-blah blah i love citing sources like [this][target_1]
+blah blah i love citing sources like [this][target_1] or inline like [this](/docs/file.md@HEAD)
                                            [target_1]: /docs/file.md
 ```
 
@@ -30,6 +30,9 @@ or, code
 def fun_function():
     pass # see [here][target_2]
     #                [target_2]: /src/repo/file.py
+
+class Foo:
+    pass # see [target_3]((/src/repo/file.py)). hopefully no actual languages use [..]((...)) normally
 ```
 
 This mirrors the standard md [reference](https://spec.commonmark.org/0.30/#link-label)
@@ -42,32 +45,42 @@ juilus was [here][target]
 
 ## Link syntax spec
 
-### Targets
+### Links
+
+TODO(bowei): fill in as above. Basically just reuse the markdown syntax.
+Look into some common languages to make sure syntax doesn't collide.
+Also add an escape hatch if it does.
+
+
+### Link resolution
 
 Here's a list of things you are allowed to refer to, and what they mean
 
 Format
 ```
-[<repo_spec>]<object_id>[@<version_id>][<local_specifier>]
+[<repo_spec>]<object_id>[@<version_id>][.<local_specifier>][++[<ignored_text>]]
+```
 
-repo_spec is always optional and is of the form
+`repo_spec` is always optional and is of the form:
 
 TODO(bowei)
 
-object_id can be:
+`object_id` can be:
 
 1. the hash of a commit
 2. the hash of a blob/tree
 3. a relative filename
 4. an absolute filename, relative to the root of the repo
 
-version_id is only relevant for relative or absolute filenames, and is disallowed otherwise. It can be:
+`version_id` is only relevant for relative or absolute filenames, and is disallowed otherwise. It can be:
 
 1. the hash of a commit
 2. a branch name, specified as `refs/heads/<branch_name>`
 3. the literal string `HEAD`
 
-local_specifier can be:
+Defaults to (3).
+
+`local_specifier` can be:
 
 1. a line number, 1-indexed
 2. a line and col number, 1-indexed
@@ -76,6 +89,41 @@ local_specifier can be:
 5. a string representing plaintext to search for, of the form 
 TODO(bowei)
 6. a mark aka anchor, like `#anc`
+
+`ignored_text` is comment space and can be used for whatever systems are built on top of this.
+
+### Link anchors
+
+Syntax (TODO(bowei): change this???)
+
+```md
+# option 1 inline <!--- {#section-anc #alias-section-anc}{any text can go} here. this also works for pandoc + html -->
+
+option 2: full line
+<!--- {##section-anc ##alias}{blah}{blah blah} -->
+```
+
+```py
+x = funcall_me() # option 1 inline: []{#anc ##combined-with-fullline-alias}{blah} any text can go here as usual
+
+# options 2 fulline: []{##anc ##alias-anc}{blah} blah blah
+```
+
+### Redirects
+
+If there is an entire file whos only contents are
+```
+[_r]: <other_target>
+```
+
+Or, if there is a mark which says
+
+```
+{#anc1 #anc2}{_r=<other_target>}{blah}
+```
+
+then it's interpreted as a redirect.
+
 
 
 ---
