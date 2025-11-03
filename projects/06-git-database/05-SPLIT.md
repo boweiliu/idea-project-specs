@@ -51,6 +51,8 @@ TODO(bowei): fill in as above. Basically just reuse the markdown syntax.
 Look into some common languages to make sure syntax doesn't collide.
 Also add an escape hatch if it does.
 
+TODO(bowei): link resolutions can be reused (which direction when disambiguating??)
+
 
 ### Link resolution
 
