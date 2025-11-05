@@ -1,3 +1,9 @@
+TODO(bowei):
+
+1. Make it so that the links we are dealing with are a strict subset of markdwon inline links (link, tgt, title) and of markdown ref links (full, shortcut, or collapsed). They have some annoying edge cases with parsing brackets etc -- would like to make ours compatible and a subset. For instance maybe our link targets always look like `[link](</@#> (repo@file@hash@line@@extra))
+
+--
+
 Starting from the top again:
 
 ## What is the project?
@@ -20,7 +26,7 @@ Conceptually, git has at least 5 types of things:
 
 Markdown
 ```md
-blah blah i love citing sources like [this][target_1] or inline like [this](/docs/file.md@HEAD)
+blah blah i love citing sources like [this][target_1] or inline like [this](</docs/file name.md@HEAD> "title")
                                            [target_1]: /docs/file.md
 ```
 
@@ -28,8 +34,8 @@ or, code
 
 ```python
 def fun_function():
-    pass # see [here][target_2]
-    #                [target_2]: /src/repo/file.py
+    pass # see [target_2]
+    #          [target_2]: /src/repo/file.py
 
 class Foo:
     pass # see [target_3]((/src/repo/file.py)). hopefully no actual languages use [..]((...)) normally
@@ -51,6 +57,8 @@ TODO(bowei): fill in as above. Basically just reuse the markdown syntax.
 Look into some common languages to make sure syntax doesn't collide.
 Also add an escape hatch if it does.
 
+TODO(bowei): link resolutions can be reused (which direction when disambiguating??)
+
 
 ### Link resolution
 
@@ -58,7 +66,7 @@ Here's a list of things you are allowed to refer to, and what they mean
 
 Format
 ```
-[<repo_spec>]<object_id>[@<version_id>][.<local_specifier>][++[<ignored_text>]]
+[<repo_spec>@]<object_id>[@<version_id>][@<local_specifier>][@@[<ignored_text>]]
 ```
 
 `repo_spec` is always optional and is of the form:
@@ -97,16 +105,21 @@ TODO(bowei)
 Syntax (TODO(bowei): change this???)
 
 ```md
-# option 1 inline <!--- {#section-anc #alias-section-anc}{any text can go} here. this also works for pandoc + html -->
+option 1 Ordinary markdown sections are interpreted per gh md spec, eg #section-header links to this one
+### Section header 
+
 
 option 2: full line
 <!--- {##section-anc ##alias}{blah}{blah blah} -->
+
+option 3: explicit html tag (this becomes invisible in html) with id #anc-me
+text is here <a id="anc-me"></a> yay
 ```
 
 ```py
-x = funcall_me() # option 1 inline: []{#anc ##combined-with-fullline-alias}{blah} any text can go here as usual
+x = funcall_me() # option 1 inline: []{#anc ##combined-with-fullline-alias}{meta <data>} any text can go here as usual
 
-# options 2 fulline: []{##anc ##alias-anc}{blah} blah blah
+# options 2 fulline: []{##anc ##alias-anc}{meta <data>} blah blah
 ```
 
 ### Redirects
