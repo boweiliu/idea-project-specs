@@ -1,3 +1,10 @@
+hmmm. maybe for link text & source, we support it in markdown and we mirror it to non-markdown.
+for link anchor/target, we support it like pandocmarkdown, but we have a different format for vanilla markdown, and we mirror the latter to non-markdown. so pandoc is the exception (even though maybe it's the inspiration).
+
+Links that refer to themselves are also pretty good for anchors.
+
+--
+
 TODO(bowei):
 
 1. Make it so that the links we are dealing with are a strict subset of markdwon inline links (link, tgt, title) and of markdown ref links (full, shortcut, or collapsed). They have some annoying edge cases with parsing brackets etc -- would like to make ours compatible and a subset. For instance maybe our link targets always look like `[link](</@#> (repo@file@hash@line@@extra)). That way if they are rendered in markdown they still render as links but they clearly redirect to something that doesn't make sense (there's usually no file or directory called "@#", or whatever)
