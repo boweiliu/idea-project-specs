@@ -1,3 +1,23 @@
+NEXT STEPS
+
+1. fill out the last bit of the section below around link anchorage -- do start-of-line vs inline, and do an
+2. a folder of test cases aka examples
+3. change pointer values to be the same structure, i like `<##...>` for consistency, and `</-##...>`  for enabling compatibility with flat files, and `</x##...>` for variability (lets make it so the "x", if it is used in any pointer values in the document, must be present in all such values; and, if it's used in names/anchors, must match across those. note that /x## is valid syntax in markdown for link pointer name compatibility, but /x## is not valid syntax in pandoc for link pointer anchor compatibility
+4. flesh out what characters and classes are allowed in link pointer names and anchors, e.g. unicode, alphanumeric, escapes
+5. define how to escape; like if a programming language wants to actually use a part of link pointer syntax, how do we avoid the link pointer parser from identifying it? maybe proposal, have it terminated by `##` to "cancel" the contents
+6. flesh out the LP pointer value syntax: filename, commit hash, line/column, anchor, regex search etc . Something `#`-delimited makes sense. make sure there's room for metadata at the end
+7. specify how to handle duplicate pointer invocations (entirely normal), duplicate pointer definitions (last valid uncancelled one wins?), duplicate pointer anchorages (last valid uncancelled one wins)
+8. We need another type, link pointer redirects, full-file or by-anchor. if by-anchor maybe we can borrow something like the pointer definition syntax? like 
+```
+          {##lp_anchor}: <##lp_value>
+or, wrapped inside a md comment to avoid it being rendered:
+[#]: # "  {##lp_anchor}: <##lp_value> "
+```
+9. Allow escaped characters, i.e. also match `\[ \] \< \> \{ \}` cuz some folks might need to use those inside code blocks or whatever. Hopefully this doesn't break parsing.
+
+--
+
+
 ok, there's 3 separate things here and here's how we will refer to them.
 
 1. Link pointer names
