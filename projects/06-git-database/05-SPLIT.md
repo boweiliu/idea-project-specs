@@ -1,10 +1,88 @@
+ok, there's 3 separate things here and here's how we will refer to them.
+
+1. Link pointer names
+2. Link pointer values
+3. Link pointer anchors
+
+
+1 - LP names are like variable names. they're user-defined handles. They should not get rendered in markdown or get executed in code. For instance, the literal `lp_name` is a link pointer name in
+
+```
+markdown lorem ipsum real [text][##lp_name]
+```
+and it is delimited by the `[##....]` construction. In context we will call this usage a *link pointer invocation*.
+
+By combining markdown and a link pointer name, it's possible to get half-compatibility with markdown, in that they should render as markdown links, but the links should not resolve to anything meaningful.
+
+
+2 - LP pointer values are like the values that variables get assigned to. They're user-defined values per the spec. They should not get rendered or executed. For instance, everything after the `##` is a `lp_value`:
+
+```
+[##lp_name]: /-##/src/target/foo.ts#L1,3-5,17
+```
+and it is delimited by the `/x##.....` construction where x is any character within a certain character pool (TBD).
+
+
+By combining a link pointer name and link pointer value we get a *link pointer definition*, as above.
+
+
+
+3 - LP pointer anchors are like things that can be `&`'d to get a memory address to store in LP pointer values. They're user defined handles. They should not get rendered or executed. For instance, here `lp_anchor` is the nameable anchor.
+```
+# title here []({##lp_anchor})
+```
+
+We will call a use of a lp pointer anchor a *link pointer anchoring*.
+
+
+### Problem
+
+How to define a syntax which is ignorable (i.e. compatible with comments) in markdown and virtually any programming plaintext format? including e.g. json? and is unlikely to be already used in programming languages?
+
+1 - link pointer invocation
+
+Let's use `[##....]`. Widely compatible. I might also reserve `[x##....]` to mirror the link pointer definition syntax.
+
+```
+md: [text][##lp_name]
+md: [text][##lp_name][](<##reserved_space for other metadata on the link pointer invocation site>)
+py: # here is text [##lp_name]
+py: # [this][##lp_name] also works 
+c : /* here is text [##lp_name] */
+html/jsx: <!-- here is text [##lp_name] -->
+```
+
+2 - link pointer definition. For ease of searching, let's try to keep the "##" syntax, and look for `[##....]: </x##.....>` where x is any character (allowing x to be any character there, defaulting to `-`, allows some funky markdown magic later). Also, we will let the `<` and `>` be elided if the inside string is space-delimited.
+
+```
+md: this works and is not rendered
+[##lp_name]: </-##/src/target/foo#reserved_space_for_metadata> "whatever title text you need - this is not rendered inline but is user-facing visible in the html hover"
+md: also allowed, any amount of whitespace, which helps with visual alignment
+                                      [##lp_name]: /-##/src/target/foo ""
+py: the same, just have to prefix with the comment character
+#                                     [##lp_name]: /-##/src/target/foo ""
+# [##lp_name]: </-##/src/target/foo is here> ""
+html: the same. here having the explicit terminator is extremely helfpul
+<!-- [##lp_name]: </-##/src/target/foo is here> -->
+```
+
+
+
+
+
+
+--
+
+
 Q: should we support context? i.e. the idea that if you link to another piece of text in a document, and the target text starts out its file with "HEREIN LIES A BUNCH OF FALSE STATEMENTS" or something, then taking those snippets out of context is unhelpful. Or, more concretely, the instructions in the doc might be documenting how to operate the cli in visual mode whereas you want to know how to do it in simplified mode, and a human (OR llm) might get confused about which case we're talking about without context.
 A: probably not in this part. There can be another spec layer on top which gives explicit places to find context -- at the top of the file, say, or in a README.md in the folder, and the context blocks can be summarized but also refer to the full data from which it was summarized, and if I'm in a block which already has the same context then I can elide the context change when referecing a relevant block.
 
 
 --
 
-hmmm. maybe for link text & source, we support it in markdown and we mirror it to non-markdown.
+how are link text/sources/targets compatible?
+
+hmmm. maybe for link text & source, we support it in markdown and we mirror it to non-markdown. so the result being that non-markdown files will have markdown-looking links floating around.
 for link anchor/target, we support it like pandocmarkdown, but we have a different format for vanilla markdown, and we mirror the latter to non-markdown. so pandoc is the exception (even though maybe it's the inspiration).
 
 Links that refer to themselves are also pretty good for anchors.
