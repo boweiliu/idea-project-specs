@@ -6,14 +6,16 @@ NEXT STEPS
 4. flesh out what characters and classes are allowed in link pointer names and anchors, e.g. unicode, alphanumeric, escapes
 5. define how to escape; like if a programming language wants to actually use a part of link pointer syntax, how do we avoid the link pointer parser from identifying it? maybe proposal, have it terminated by `##` to "cancel" the contents
 6. flesh out the LP pointer value syntax: filename, commit hash, line/column, anchor, regex search etc . Something `#`-delimited makes sense. make sure there's room for metadata at the end
+6. Also make sure there's room for metadata on the link pointer name and link pointer anchor side. (i.e. at invocation and anchorage sites). Tricky cuz the literal name is used for matching - have to add any metadata / comments out-of-band. Postpending a `[]()` block kinda makes sense ig. 
+   Maybe - reuse the link pointer value syntax for link pointer metadata, i.e. `</x##....>`, since that can be easily embedded into inline markdown nonrendered links e.g `[](</x##...>)`, and is unambiguous since a link pointer definition needs to be of the form `name: value` with the literal 2 characters `: `.  Then in that case we need a name and syntax for the metadata blob. maybe lets change the syntax slighltly, to `<[]##...>` or `<{}##..>` to make it clearer what it is attaching metadata to
 7. specify how to handle duplicate pointer invocations (entirely normal), duplicate pointer definitions (last valid uncancelled one wins?), duplicate pointer anchorages (last valid uncancelled one wins)
-8. We need another type, link pointer redirects, full-file or by-anchor. if by-anchor maybe we can borrow something like the pointer definition syntax? like 
+8. We need another type of construction, link pointer redirects, full-file or by-anchor. if by-anchor maybe we can borrow something like the pointer definition syntax? like 
 ```
           {##lp_anchor}: <##lp_value>
 or, wrapped inside a md comment to avoid it being rendered:
 [#]: # "  {##lp_anchor}: <##lp_value> "
 ```
-9. Allow escaped characters, i.e. also match `\[ \] \< \> \{ \}` cuz some folks might need to use those inside code blocks or whatever. Hopefully this doesn't break parsing.
+9. Allow escaped characters, i.e. also match `\[ \] \< \> \{ \} \#` cuz some folks might need to use those inside code blocks or whatever. Hopefully this doesn't break parsing.
 
 --
 
