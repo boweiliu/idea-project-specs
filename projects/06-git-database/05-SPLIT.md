@@ -52,6 +52,10 @@ c : /* here is text [##lp_name] */
 html/jsx: <!-- here is text [##lp_name] -->
 ```
 
+We reserve some room for metadata for future layers to build upon, e.g. whether this link will be quoted/inlined or not, etc.
+
+.
+
 2 - link pointer definition. For ease of searching, let's try to keep the "##" syntax, and look for `[##....]: </x##.....>` where x is any character (allowing x to be any character there, defaulting to `-`, allows some funky markdown magic later). Also, we will let the `<` and `>` be elided if the inside string is space-delimited.
 
 ```
@@ -66,11 +70,24 @@ html: the same. here having the explicit terminator is extremely helfpul
 <!-- [##lp_name]: </-##/src/target/foo is here> -->
 ```
 
+Again we reserve some space for future metadata; but doing so this time is easy
+
 3 - link pointer anchorage
 
-Let's use `{##....}`. Pretty sure this is still widely compatible, and hopefully should also be half-compatible with pandoc (which should normalize away the second `#`). Also going to reserve `{x##...}` for similar reasons as above. (In particular, `{-##...}` being used to end anchorage for sections makes a lot of sense). The only difference here is that we need to wrap it inside a markdown comment to work; and `({##...})` is prettier than `<!--{##....}-->`
+Let's use `{##....}`. Pretty sure this is still widely compatible, and hopefully should also be half-compatible with pandoc (which should normalize away the second `#`). Also going to reserve `{x##...}` for similar reasons as above. (In particular, `{-##...}` being used to end anchorage for sections is pretty interesting; it breaks pandoc unless wrapped in markdown `[]()`.). The only difference here is that we need to wrap it inside a markdown comment to work; and `[]({##...})` is prettier than `<!--{##....}-->` IMO.
 
+The most common metadata we will want to attach is whether the anchor point is inline or at the beginning of the line.
 
+```
+md: this works and is not rendered
+# heading []({##lp_anchor}#other_metadata{##other_anchor})
+md: this also works. up to preference
+# heading <!-- {##lp_anchor}#other metadata {##other_anchor}#metadata -->
+py: ???
+html/jsx: ??
+```
+
+metadata...
 
 
 --
@@ -79,6 +96,8 @@ Let's use `{##....}`. Pretty sure this is still widely compatible, and hopefully
 Q: should we support context? i.e. the idea that if you link to another piece of text in a document, and the target text starts out its file with "HEREIN LIES A BUNCH OF FALSE STATEMENTS" or something, then taking those snippets out of context is unhelpful. Or, more concretely, the instructions in the doc might be documenting how to operate the cli in visual mode whereas you want to know how to do it in simplified mode, and a human (OR llm) might get confused about which case we're talking about without context.
 A: probably not in this part. There can be another spec layer on top which gives explicit places to find context -- at the top of the file, say, or in a README.md in the folder, and the context blocks can be summarized but also refer to the full data from which it was summarized, and if I'm in a block which already has the same context then I can elide the context change when referecing a relevant block.
 
+Q: should we support AST, in addition to line/col, anchor/section/fragment, anchor + line,col ?
+A: sure, later tho, and that might be hard / language-dependent. need to see how eg treesitter does it
 
 --
 
