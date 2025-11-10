@@ -16,6 +16,7 @@ or, wrapped inside a md comment to avoid it being rendered:
 [#]: # "  {##lp_anchor}: <##lp_value> "
 ```
 9. Allow escaped characters, i.e. also match `\[ \] \< \> \{ \} \# \\[ \\] ...` cuz some folks might need to use those inside code blocks or whatever. Hopefully this doesn't break parsing.
+10. Allow escaping inside me, i.e. if i'm delimited by `<>` then `\<\>` are literals ; if i'm delimited by `\<\>` then `\\< \\>` are literals; if i'm delimited by `\\< \\>` then `\\\\<\\\\>` . or something.
 
 --
 
