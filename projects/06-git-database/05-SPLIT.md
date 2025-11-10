@@ -1,7 +1,17 @@
+Q: should we support context? i.e. the idea that if you link to another piece of text in a document, and the target text starts out its file with "HEREIN LIES A BUNCH OF FALSE STATEMENTS" or something, then taking those snippets out of context is unhelpful. Or, more concretely, the instructions in the doc might be documenting how to operate the cli in visual mode whereas you want to know how to do it in simplified mode, and a human (OR llm) might get confused about which case we're talking about without context.
+A: probably not in this part. There can be another spec layer on top which gives explicit places to find context -- at the top of the file, say, or in a README.md in the folder, and the context blocks can be summarized but also refer to the full data from which it was summarized, and if I'm in a block which already has the same context then I can elide the context change when referecing a relevant block.
+
+
+--
+
 hmmm. maybe for link text & source, we support it in markdown and we mirror it to non-markdown.
 for link anchor/target, we support it like pandocmarkdown, but we have a different format for vanilla markdown, and we mirror the latter to non-markdown. so pandoc is the exception (even though maybe it's the inspiration).
 
 Links that refer to themselves are also pretty good for anchors.
+
+--
+
+Also would be nice: have the "broken" markdown links (i.e. that link to `</@#>` or whatever) instead link to something which PROBABLY doesn't exist in the repo, but could be later filled in by a suitable generator / post-processor.
 
 --
 
