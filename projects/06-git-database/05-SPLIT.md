@@ -90,6 +90,8 @@ html/jsx: ??
 metadata...
 
 
+References: dingus <https://spec.commonmark.org/dingus/>
+
 --
 
 
