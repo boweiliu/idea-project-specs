@@ -32,7 +32,7 @@ By combining a link pointer name and link pointer value we get a *link pointer d
 # title here []({##lp_anchor})
 ```
 
-We will call a use of a lp pointer anchor a *link pointer anchoring*.
+We will call a use of a lp pointer anchor a *link pointer anchorage*.
 
 
 ### Problem
@@ -56,7 +56,7 @@ html/jsx: <!-- here is text [##lp_name] -->
 
 ```
 md: this works and is not rendered
-[##lp_name]: </-##/src/target/foo#reserved_space_for_metadata> "whatever title text you need - this is not rendered inline but is user-facing visible in the html hover"
+[##lp_name]: </-##/src/target/foo...tbd_delimiter.reserved_space_for_metadata> "whatever title text you need - this is not rendered inline but is user-facing visible in the html hover"
 md: also allowed, any amount of whitespace, which helps with visual alignment
                                       [##lp_name]: /-##/src/target/foo ""
 py: the same, just have to prefix with the comment character
@@ -66,7 +66,9 @@ html: the same. here having the explicit terminator is extremely helfpul
 <!-- [##lp_name]: </-##/src/target/foo is here> -->
 ```
 
+3 - link pointer anchorage
 
+Let's use `{##....}`. Pretty sure this is still widely compatible, and hopefully should also be half-compatible with pandoc (which should normalize away the second `#`). Also going to reserve `{x##...}` for similar reasons as above. (In particular, `{-##...}` being used to end anchorage for sections makes a lot of sense). The only difference here is that we need to wrap it inside a markdown comment to work; and `({##...})` is prettier than `<!--{##....}-->`
 
 
 
