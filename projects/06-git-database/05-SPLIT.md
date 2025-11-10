@@ -15,7 +15,7 @@ NEXT STEPS
 or, wrapped inside a md comment to avoid it being rendered:
 [#]: # "  {##lp_anchor}: <##lp_value> "
 ```
-9. Allow escaped characters, i.e. also match `\[ \] \< \> \{ \} \#` cuz some folks might need to use those inside code blocks or whatever. Hopefully this doesn't break parsing.
+9. Allow escaped characters, i.e. also match `\[ \] \< \> \{ \} \# \\[ \\] ...` cuz some folks might need to use those inside code blocks or whatever. Hopefully this doesn't break parsing.
 
 --
 
