@@ -16,7 +16,8 @@ or, wrapped inside a md comment to avoid it being rendered:
 [#]: # "  {##lp_anchor}: <##lp_value> "
 ```
 9. Allow escaped characters, i.e. also match `\[ \] \< \> \{ \} \# \\[ \\] ...` cuz some folks might need to use those inside code blocks or whatever. Hopefully this doesn't break parsing.
-10. Allow escaping inside me, i.e. if i'm delimited by `<>` then `\<\>` are literals ; if i'm delimited by `\<\>` then `\\< \\>` are literals; if i'm delimited by `\\< \\>` then `\\\\<\\\\>` . or something.
+10. Allow escaping inside me, i.e. if i'm delimited by `<>` then `\<\>` are literals ; if i'm delimited by `\<\>` then `\\< \\>` are literals; if i'm delimited by `\\< \\>` then `\\\\<\\\\>` . or something. (NOTE: maybe do this last, seems mid)
+11. Maybe: also allow name-less link invocations? like just `[...](</-##.....>)` for markdown/text, possibly followed by metadata `(<[]##....>)`
 
 --
 
