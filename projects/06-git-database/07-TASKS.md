@@ -10,3 +10,9 @@ Question: how to handle splitting/merging of tasks? should a task have a stable 
 How to handle 2 agents parallel-ly doing the same task and then a human compares the output?
 
 
+
+Sample prmopt
+
+```
+go into projects/06-git-database, make a new folder called prototypes/code/01-task-tracker, and in there, start a project that runs a vite react frontend + python backend + sqlite database with drag and drop functionality for creating, viewing, and editing tasks in a kanban view.
+```
