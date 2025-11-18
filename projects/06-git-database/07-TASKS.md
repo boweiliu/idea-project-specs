@@ -1,3 +1,7 @@
+maybe: it's simultaneously obsidian-like and card-game-like? i.e. some views are the "kanban view", the "select a state and look at the task jumble" view, and a "single doc/task/tag as center and all its other linked docs" view.
+
+--
+
 
 We can already build a task system on top of [##.], {##.}, <##.>, <[]##.>. Especially if it's vibe coded then we can immediately put it to use.
 
