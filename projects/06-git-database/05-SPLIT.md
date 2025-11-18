@@ -1,3 +1,9 @@
+AFTER THOSE NEXT STEPS
+
+12. Separate out 3 docs: the human-readable overview and logic, the formal english spec, a set of test examples, and finally 1-3 sample code implementations. The idea is that each layer should reference the last, and that humans should feel empowered to change the human-readable overview and have the formal spec, test examples, and code all be LLM-updated to match.
+13. In order to encode test cases, we should decide on a plaintext linear format for storing file names and contents in a directory structure.
+14. Take inspiration from the MAML.dev spec -- what is actually going on, what are the possible actions to do with our doc format, etc. Basically: we need to formalize the API of what a "spec implementation" can DO with the format, since it's not a rendered format. For instance, an implementation should be able to fetch out all LP names `[##` , values `<##` , and anchors `{##`, by byte range, and construct a mapping, as well as any key/value, metadata, or comment metadata attached.
+
 NEXT STEPS
 
 1. fill out the last bit of the section below around link anchorage -- do start-of-line vs inline, and do an
